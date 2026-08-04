@@ -15,3 +15,20 @@
     font-family: "DM Sans", sans-serif;
     font-optical-sizing: auto;
 }
+
+.border-white {
+    border: 2px solid white;
+}
+
+.correct {
+    color: #ffffffcc;
+}
+
+.incorrect {
+    color: #D95F5F;
+}
+
+.incorrect-underline {
+    text-decoration: underline;
+    text-decoration-color: #D95F5F;
+}
