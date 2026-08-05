@@ -5,6 +5,24 @@
     --color-shade-white: rgb(217, 217, 217);  
 }
 
+/* for debug */
+.border-white {
+    border: 2px solid white;
+}
+
+.border-red {
+    border: 2px solid red;
+}
+
+.border-yellow {
+    border: 2px solid yellow;
+}
+
+.border-blue {
+    border: 2px solid blue;
+}
+
+/* actual css for wide use */
 .crimson-pro {
     font-family: "Crimson Pro", serif;
     color: rgb(198, 198, 198);
@@ -14,10 +32,6 @@
 .dm-sans {
     font-family: "DM Sans", sans-serif;
     font-optical-sizing: auto;
-}
-
-.border-white {
-    border: 2px solid white;
 }
 
 .correct {
