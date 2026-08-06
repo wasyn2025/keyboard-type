@@ -1,12 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard } from 'lucide-react';
+import { wordList } from './words.js';
 import Word from './components/Word.jsx';
-
-const wordList = [
-  "halo", "polisi", "laravel", "samsung", "tertawa",
-  "dunia", "rumah", "makanan", "coklat", "menari",
-  "programming", "coding", "kardus", "ungu", "jalan",
-];
 
 function getRandomWords(count) {
   const result = [];
@@ -19,10 +14,39 @@ function getRandomWords(count) {
 }
 
 function App() {
-  const words = getRandomWords(50);
+  const [words] = useState(() => getRandomWords(50));
+  const [teks, setTeks] = useState('');
+  const [kataAktifIndex, setKataAktifIndex] = useState(0);
+
+  const kotakKetikRef = useRef(null);
+
+  useEffect(() => {
+    kotakKetikRef.current.focus();
+  }, []);
+
+  function handleKeyDown(event) {
+    if (event.key === ' ') {
+      event.preventDefault();
+
+      if (teks.length !== 0) {
+        setKataAktifIndex(kataAktifIndex + 1);
+        setTeks('');
+      }
+    }
+  }
 
   return (
-    <div className='w-5/6 mx-auto h-full flex flex-col gap-y-40'>
+    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => kotakKetikRef.current.focus()}>
+
+      <input
+        ref={kotakKetikRef}
+        type='text'
+        value={teks}
+        onChange={(event) => setTeks(event.target.value)}
+        onKeyDown={handleKeyDown}
+        className='absolute opacity-0 pointer-evens-none'
+      />
+
       <div className='flex items-center dm-sans text-shade-white gap-2'>
         <Keyboard size={34} />
         <h1 className='text-3xl font-medium'>keyboardtype</h1>
@@ -41,14 +65,18 @@ function App() {
 
           <div className='mb-3 select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3 h-[9.5rem] overflow-hidden'>
             {
-              words.map((word, index) => (
-                <Word key={index} text={word} wordIndex={index} />
+              words.map((kata, kataIndex) => (
+                <Word key={kataIndex} kata={kata} dataWordIndex={kataIndex} teksUntukDibandingkan={
+                  kataIndex === kataAktifIndex ?
+                    teks : kataIndex < kataAktifIndex ?
+                      kata : ''
+                } />
               ))
             }
           </div>
 
           <button className='w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10'>
-             <RotateCcw size={22} />
+            <RotateCcw size={22} />
           </button>
         </div>
       </div>
