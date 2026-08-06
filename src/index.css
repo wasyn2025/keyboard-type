@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-    --color-shade-white: rgb(217, 217, 217);  
+    --color-shade-white: rgb(217, 217, 217);
 }
 
 /* for debug */
@@ -34,8 +34,12 @@
     font-optical-sizing: auto;
 }
 
+.neutral {
+    color: rgba(255, 255, 255, 0.2);
+}
+
 .correct {
-    color: #ffffffcc;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .incorrect {
@@ -43,6 +47,7 @@
 }
 
 .incorrect-underline {
-    text-decoration: underline;
+    text-decoration-line: underline;
     text-decoration-color: #D95F5F;
+    text-underline-offset: 12px;
 }

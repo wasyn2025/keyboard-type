@@ -1,17 +1,25 @@
-function Word({kata, dataWordIndex, teksUntukDibandingkan}) {
+export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPassed }) {
+    let className = { color: 'netral', underline: '' };
+
+    if (isPassed !== false && kata !== teksUntukDibandingkan) {
+        const jumlahDash = kata.length - teksUntukDibandingkan.length;
+        className.underline = 'incorrect-underline';
+        for (let i = 0; i <= jumlahDash; i++) {
+            teksUntukDibandingkan += '-';
+        }
+    }
+
     return <div data-wordindex={dataWordIndex}>
         {kata.split('').map((huruf, hurufIndex) => {
-            let warna = "text-white/20";
+            className.color = 'neutral';
 
-            if(hurufIndex < teksUntukDibandingkan.length) {
-                warna = teksUntukDibandingkan[hurufIndex] === huruf ?
-                    'text-white/80' :
-                    'text-[#D95F5F]';
+            if (hurufIndex < teksUntukDibandingkan.length) {
+                className.color = teksUntukDibandingkan[hurufIndex].toLowerCase() === huruf ?
+                    'correct' :
+                    'incorrect';
             }
 
-            return <span key={hurufIndex} className={warna}>{huruf}</span>;
+            return <span key={hurufIndex} className={`${className.color} ${className.underline}`}>{huruf}</span>;
         })}
     </div>;
 }
-
-export default Word;

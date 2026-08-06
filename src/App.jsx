@@ -17,18 +17,18 @@ function App() {
   const [words] = useState(() => getRandomWords(50));
   const [teks, setTeks] = useState('');
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
+  const [teksHistory, setTeksHistory] = useState([]);
 
-  const kotakKetikRef = useRef(null);
+  const kotakKetikRef = useRef(null);;
 
-  useEffect(() => {
-    kotakKetikRef.current.focus();
-  }, []);
+  useEffect(() => kotakKetikRef.current.focus(), []);
 
   function handleKeyDown(event) {
     if (event.key === ' ') {
       event.preventDefault();
 
       if (teks.length !== 0) {
+        setTeksHistory([...teksHistory, teks.toLowerCase()]);
         setKataAktifIndex(kataAktifIndex + 1);
         setTeks('');
       }
@@ -66,11 +66,17 @@ function App() {
           <div className='mb-3 select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3 h-[9.5rem] overflow-hidden'>
             {
               words.map((kata, kataIndex) => (
-                <Word key={kataIndex} kata={kata} dataWordIndex={kataIndex} teksUntukDibandingkan={
+                <Word 
+                key={kataIndex} 
+                kata={kata} 
+                dataWordIndex={kataIndex} 
+                teksUntukDibandingkan={
                   kataIndex === kataAktifIndex ?
                     teks : kataIndex < kataAktifIndex ?
-                      kata : ''
-                } />
+                      teksHistory[kataIndex] : ''
+                } 
+                isPassed={teksHistory[kataIndex] || false}
+                />
               ))
             }
           </div>
