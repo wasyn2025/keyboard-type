@@ -37,7 +37,7 @@ export default function App() {
     }
   }
 
-  if(isFocus === true) {
+  if (isFocus === true) {
     classToggle('p#timer', 'invisible', 'visible');
     classToggle('span#language', 'visible', 'invisible');
     classToggle('button#restart-btn', 'visible', 'invisible');

@@ -49,7 +49,7 @@
 .incorrect-underline {
     text-decoration-line: underline;
     text-decoration-color: #D95F5F;
-    text-underline-offset: 12px;
+    text-underline-offset: 10px;
 }
 
 .visible {
@@ -58,8 +58,4 @@
 
 .invisible {
     opacity: 0;
-}
-
-.opacity-transition {
-    transition: opacity 500ms ease;
 }

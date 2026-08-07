@@ -1,10 +1,12 @@
 export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPassed }) {
     let className = { color: 'netral', underline: '' };
+    teksUntukDibandingkan = teksUntukDibandingkan.slice(0, kata.length);
 
     if (isPassed !== false && kata !== teksUntukDibandingkan) {
         const jumlahDash = kata.length - teksUntukDibandingkan.length;
         className.underline = 'incorrect-underline';
-        for (let i = 0; i <= jumlahDash; i++) {
+
+        for (let i = 0; i < jumlahDash; i++) {
             teksUntukDibandingkan += '-';
         }
     }
