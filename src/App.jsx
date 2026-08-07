@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard } from 'lucide-react';
-import { wordList } from './words.js';
+import { wordList } from './util/words.js';
 import { classToggle } from './util/util.js';
 import Word from './components/Word.jsx';
 
@@ -20,18 +20,37 @@ export default function App() {
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
+  const [timer, setTimer] = useState(30);
 
   const kotakKetikRef = useRef(null);;
 
   useEffect(() => kotakKetikRef.current.focus(), []);
+  
+  useEffect(() => {
+    if (!isFocus) return;
+
+    const intervalId = setInterval(() => {
+      setTimer((timer) => (timer <= 0 ? 0 : timer - 1));
+    }, 1000);
+
+    return () => clearInterval(intervalId)
+  }, [isFocus]);
+
+  useEffect(() => {
+    if(timer <= 0 && isFocus === true) {
+      alert('Waktu habis');
+      setTimer(31);
+      setIsFocus(false);
+    }
+  }, [timer]);
 
   function handleKeyDown(event) {
     if (event.key === ' ') {
       event.preventDefault();
 
       if (teks.length !== 0) {
-        setTeksHistory([...teksHistory, teks.toLowerCase()]);
-        setKataAktifIndex(kataAktifIndex + 1);
+        setTeksHistory((previousTextHistory) => [...previousTextHistory, teks.toLowerCase()]);
+        setKataAktifIndex((previousWordIndex) => previousWordIndex + 1);
         setTeks('');
       }
     }
@@ -68,7 +87,7 @@ export default function App() {
         <div className='w-full'>
 
           <div className='w-full relative mb-6'>
-            <p id='timer' className='invisible transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans'>30</p>
+            <p id='timer' className='invisible transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans'>{ timer }</p>
             <span id='language' className='visible transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10'>
               <Earth size={18} />
               Indonesian
