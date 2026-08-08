@@ -15,8 +15,6 @@ function getRandomWords(count) {
   return result;
 }
 
-let globalIntervalId = null;
-
 export default function App() {
   const [words] = useState(() => getRandomWords(50));
   const [teks, setTeks] = useState('');
