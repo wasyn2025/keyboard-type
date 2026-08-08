@@ -14,35 +14,43 @@ function getRandomWords(count) {
   return result;
 }
 
+let globalIntervalId = null;
+
 export default function App() {
   const [words] = useState(() => getRandomWords(50));
   const [teks, setTeks] = useState('');
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(3);
 
-  const kotakKetikRef = useRef(null);;
+  const inputBoxRef = useRef(null);
+  const timerIntervalIdRef = useRef(null);
 
-  useEffect(() => kotakKetikRef.current.focus(), []);
-  
+  useEffect(() => inputBoxRef.current.focus(), []);
+
   useEffect(() => {
     if (!isFocus) return;
 
-    const intervalId = setInterval(() => {
+    timerIntervalIdRef.current = setInterval(() => {
       setTimer((timer) => (timer <= 0 ? 0 : timer - 1));
     }, 1000);
 
-    return () => clearInterval(intervalId)
+    return () => clearInterval(timerIntervalIdRef.current)
   }, [isFocus]);
 
   useEffect(() => {
-    if(timer <= 0 && isFocus === true) {
-      alert('Waktu habis');
-      setTimer(31);
-      setIsFocus(false);
+    if (timer <= 0 && isFocus === true) {
+      clearInterval(timerIntervalIdRef.current);
+
+      setTimeout(() => {
+        setTimer(3);
+        setIsFocus(false);
+      }, 600);
     }
   }, [timer]);
+
+  console.log(timerIntervalIdRef.current);
 
   function handleKeyDown(event) {
     if (event.key === ' ') {
@@ -64,10 +72,10 @@ export default function App() {
   }
 
   return (
-    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => kotakKetikRef.current.focus()}>
+    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => inputBoxRef.current.focus()}>
 
       <input
-        ref={kotakKetikRef}
+        ref={inputBoxRef}
         type='text'
         value={teks}
         onChange={(event) => {
@@ -87,7 +95,7 @@ export default function App() {
         <div className='w-full'>
 
           <div className='w-full relative mb-6'>
-            <p id='timer' className='invisible transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans'>{ timer }</p>
+            <p id='timer' className='invisible transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans'>{timer}</p>
             <span id='language' className='visible transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10'>
               <Earth size={18} />
               Indonesian
