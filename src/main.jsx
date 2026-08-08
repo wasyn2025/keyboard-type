@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-// import LazyInitDemo from './test/LazyInitDemo.jsx'
+// import TestUseRef from './test/TestUseRef.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

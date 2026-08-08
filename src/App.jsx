@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard } from 'lucide-react';
 import { wordList } from './util/words.js';
 import { classToggle } from './util/util.js';
+import * as config from './util/config.js';
 import Word from './components/Word.jsx';
 
 function getRandomWords(count) {
@@ -22,7 +23,7 @@ export default function App() {
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(config.DEFAULT_TIMER);
 
   const inputBoxRef = useRef(null);
   const timerIntervalIdRef = useRef(null);
@@ -44,8 +45,14 @@ export default function App() {
       clearInterval(timerIntervalIdRef.current);
 
       setTimeout(() => {
-        setTimer(30);
+        classToggle('p#timer', 'visible', 'invisible');
+        classToggle('span#language', 'invisible', 'visible');
+
+        setTimer(config.DEFAULT_TIMER);
         setIsFocus(false);
+        setTeks('');
+        setKataAktifIndex(0);
+        setTeksHistory([]);
       }, 600);
     }
   }, [timer]);
@@ -62,11 +69,23 @@ export default function App() {
     }
   }
 
+  function handleRestart() {
+    clearInterval(timerIntervalIdRef.current);
+
+    timerIntervalIdRef.current = '';
+    setTeks('');
+    setKataAktifIndex(0);
+    setTeksHistory([]);
+    setIsFocus(false);
+    setTimer(config.DEFAULT_TIMER);
+
+    classToggle('p#timer', 'visible', 'invisible');
+    classToggle('span#language', 'invisible', 'visible');
+  }
+
   if (isFocus === true) {
     classToggle('p#timer', 'invisible', 'visible');
     classToggle('span#language', 'visible', 'invisible');
-    classToggle('button#restart-btn', 'visible', 'invisible');
-    classToggle('button#restart-btn', 'pointer-events-auto', 'pointer-events-none');
   }
 
   return (
@@ -118,7 +137,7 @@ export default function App() {
             }
           </div>
 
-          <button id='restart-btn' className='transition-opacity duration-500 pointer-events-auto w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10'>
+          <button onClick={handleRestart} id='restart-btn' className='transition-opacity duration-500 pointer-events-auto w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10'>
             <RotateCcw size={22} />
           </button>
         </div>
