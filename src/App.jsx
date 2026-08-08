@@ -73,7 +73,6 @@ export default function App() {
     if (tinggiBaris === null) {
       if (posisiKataAktif > posisiBarisPertama) {
         setTinggiBaris(posisiKataAktif - posisiBarisPertama);
-        console.log(posisiKataAktif - posisiBarisPertama);
       }
 
       return;
