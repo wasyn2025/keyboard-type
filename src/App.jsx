@@ -22,9 +22,11 @@ export default function App() {
   const [teksHistory, setTeksHistory] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
   const [timer, setTimer] = useState(config.DEFAULT_TIMER);
+  const [caretPosition, setCaretPosition] = useState({ top: 0, left: 0 });
 
   const inputBoxRef = useRef(null);
   const timerIntervalIdRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => inputBoxRef.current.focus(), []);
 
@@ -75,6 +77,41 @@ export default function App() {
     setTimer(config.DEFAULT_TIMER);
   }
 
+  useEffect(() => {
+    calculateCaretPosition();
+  }, [teks, kataAktifIndex]);
+
+  function calculateCaretPosition() {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const wordElement = container.querySelector(`[data-wordindex="${kataAktifIndex}`);
+    if (!wordElement) return;
+
+    const hurufAktifIndex = teks.length;
+    const containerRect = container.getBoundingClientRect();
+    let letterElement = wordElement.querySelector(`[data-letterindex="${hurufAktifIndex}"]`);
+
+    if (letterElement) {
+      // caret berjalan pada huruf di kata terget yang masih aktif
+      const letterRect = letterElement.getBoundingClientRect();
+      setCaretPosition({
+        top: letterRect.top - containerRect.top,
+        left: letterRect.left - containerRect.left
+      });
+    } else {
+      // caret berpindah ke kata selanjutnya karena kata target sudah selesai
+      const allLetters = wordElement.querySelectorAll('[data-letterindex]');
+      const lastLetter = allLetters[allLetters.length - 1];
+      const letterRect = lastLetter.getBoundingClientRect();
+
+      setCaretPosition({
+        top: letterRect.top - containerRect.top,
+        left: letterRect.left - containerRect.left + letterRect.width
+      });
+    }
+  }
+
   return (
     <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => inputBoxRef.current.focus()}>
 
@@ -106,7 +143,16 @@ export default function App() {
             </span>
           </div>
 
-          <div className='mb-8 select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3 h-38 overflow-hidden'>
+          <div
+            ref={containerRef}
+            className='relative mb-8 select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3 h-38 overflow-hidden'>
+            <div
+              className={`absolute w-[2.5px] h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
+              style={{
+                top: `${caretPosition.top}px`,
+                left: `${caretPosition.left}px`
+              }}
+            />
             {
               words.map((kata, kataIndex) => (
                 <Word
