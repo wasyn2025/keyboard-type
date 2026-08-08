@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Earth, AlarmClock, RotateCcw, Keyboard } from 'lucide-react';
+import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon } from 'lucide-react';
 import { wordList } from './util/words.js';
 import { classToggle } from './util/util.js';
 import * as config from './util/config.js';
@@ -23,6 +23,10 @@ export default function App() {
   const [isFocus, setIsFocus] = useState(false);
   const [timer, setTimer] = useState(config.DEFAULT_TIMER);
   const [caretPosition, setCaretPosition] = useState({ top: 0, left: 0 });
+
+  const [offsetGeser, setOffsetGeser] = useState(0);
+  const [posisiBarisPertama, setPosisiBarisPertama] = useState(0);
+  const [tinggiBaris, setTinggiBaris] = useState(null);
 
   const inputBoxRef = useRef(null);
   const timerIntervalIdRef = useRef(null);
@@ -54,6 +58,35 @@ export default function App() {
     }
   }, [timer]);
 
+  useEffect(() => {
+    calculateCaretPosition();
+  }, [teks, kataAktifIndex]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
+    if (!elementAktif) return;
+
+    const posisiKataAktif = elementAktif.offsetTop;
+
+    if (tinggiBaris === null) {
+      if (posisiKataAktif > posisiBarisPertama) {
+        setTinggiBaris(posisiKataAktif - posisiBarisPertama);
+        console.log(posisiKataAktif - posisiBarisPertama);
+      }
+
+      return;
+    }
+
+    const jumlahBarisTerlewati = Math.round((posisiKataAktif - posisiBarisPertama) / tinggiBaris);
+
+    if (jumlahBarisTerlewati >= 2) {
+      setPosisiBarisPertama(prev => prev + tinggiBaris);
+      setOffsetGeser(prev => prev + tinggiBaris);
+    }
+  }, [kataAktifIndex]);
+
   function handleKeyDown(event) {
     if (event.key === ' ') {
       event.preventDefault();
@@ -75,11 +108,11 @@ export default function App() {
     setTeksHistory([]);
     setIsFocus(false);
     setTimer(config.DEFAULT_TIMER);
-  }
 
-  useEffect(() => {
-    calculateCaretPosition();
-  }, [teks, kataAktifIndex]);
+    setOffsetGeser(0);
+    setPosisiBarisPertama(0);
+    setTinggiBaris(null);
+  }
 
   function calculateCaretPosition() {
     const container = containerRef.current;
@@ -136,38 +169,42 @@ export default function App() {
         <div className='w-full'>
 
           <div className='w-full relative mb-6'>
-            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans`}>{timer}</p>
-            <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans text-yellow-500`}>{timer}</p>
+            <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-base cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
               <Earth size={18} />
               Indonesian
             </span>
           </div>
 
-          <div
-            ref={containerRef}
-            className='relative mb-8 select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3 h-38 overflow-hidden'>
+          <div className='relative mb-8 h-38 overflow-hidden'>
             <div
-              className={`absolute w-0.75 h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
-              style={{
-                top: `${caretPosition.top}px`,
-                left: `${caretPosition.left}px`
-              }}
-            />
-            {
-              words.map((kata, kataIndex) => (
-                <Word
-                  key={kataIndex}
-                  kata={kata}
-                  dataWordIndex={kataIndex}
-                  teksUntukDibandingkan={
-                    kataIndex === kataAktifIndex ?
-                      teks : kataIndex < kataAktifIndex ?
-                        teksHistory[kataIndex] : ''
-                  }
-                  isPassed={teksHistory[kataIndex] || false}
-                />
-              ))
-            }
+              ref={containerRef}
+              className='transition-transform duration-300 relative select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
+              style={{ transform: `translateY(-${offsetGeser}px)` }}
+            >
+              <div
+                className={`absolute w-0.75 h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
+                style={{
+                  top: `${caretPosition.top}px`,
+                  left: `${caretPosition.left}px`
+                }}
+              />
+              {
+                words.map((kata, kataIndex) => (
+                  <Word
+                    key={kataIndex}
+                    kata={kata}
+                    dataWordIndex={kataIndex}
+                    teksUntukDibandingkan={
+                      kataIndex === kataAktifIndex ?
+                        teks : kataIndex < kataAktifIndex ?
+                          teksHistory[kataIndex] : ''
+                    }
+                    isPassed={teksHistory[kataIndex] || false}
+                  />
+                ))
+              }
+            </div>
           </div>
 
           <button onClick={handleRestart} id='restart-btn' className='transition-opacity duration-500 pointer-events-auto w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10'>

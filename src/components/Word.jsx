@@ -24,7 +24,7 @@ export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPas
             return <span
                 data-letterindex={hurufIndex}
                 key={hurufIndex}
-                className={`${className.color} ${className.underline} transition-[color] duration-200`}
+                className={`${className.color} ${className.underline} transition-[color] duration-100`}
             >{huruf}</span>;
         })}
     </div>;
