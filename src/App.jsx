@@ -43,9 +43,6 @@ export default function App() {
       clearInterval(timerIntervalIdRef.current);
 
       setTimeout(() => {
-        classToggle('p#timer', 'visible', 'invisible');
-        classToggle('span#language', 'invisible', 'visible');
-
         setTimer(config.DEFAULT_TIMER);
         setIsFocus(false);
         setTeks('');
@@ -76,14 +73,6 @@ export default function App() {
     setTeksHistory([]);
     setIsFocus(false);
     setTimer(config.DEFAULT_TIMER);
-
-    classToggle('p#timer', 'visible', 'invisible');
-    classToggle('span#language', 'invisible', 'visible');
-  }
-
-  if (isFocus === true) {
-    classToggle('p#timer', 'invisible', 'visible');
-    classToggle('span#language', 'visible', 'invisible');
   }
 
   return (
@@ -110,8 +99,8 @@ export default function App() {
         <div className='w-full'>
 
           <div className='w-full relative mb-6'>
-            <p id='timer' className='invisible transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans'>{timer}</p>
-            <span id='language' className='visible transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10'>
+            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans`}>{timer}</p>
+            <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
               <Earth size={18} />
               Indonesian
             </span>

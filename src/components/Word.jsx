@@ -21,7 +21,7 @@ export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPas
                     'incorrect';
             }
 
-            return <span key={hurufIndex} className={`${className.color} ${className.underline}`}>{huruf}</span>;
+            return <span key={hurufIndex} className={`${className.color} ${className.underline} transition-[color] duration-200`}>{huruf}</span>;
         })}
     </div>;
 }
