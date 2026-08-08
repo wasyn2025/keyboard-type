@@ -147,7 +147,7 @@ export default function App() {
             ref={containerRef}
             className='relative mb-8 select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3 h-38 overflow-hidden'>
             <div
-              className={`absolute w-[3px] h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
+              className={`absolute w-0.75 h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
               style={{
                 top: `${caretPosition.top}px`,
                 left: `${caretPosition.left}px`
