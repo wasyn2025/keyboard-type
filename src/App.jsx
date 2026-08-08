@@ -22,7 +22,7 @@ export default function App() {
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [timer, setTimer] = useState(3);
+  const [timer, setTimer] = useState(30);
 
   const inputBoxRef = useRef(null);
   const timerIntervalIdRef = useRef(null);
@@ -44,13 +44,11 @@ export default function App() {
       clearInterval(timerIntervalIdRef.current);
 
       setTimeout(() => {
-        setTimer(3);
+        setTimer(30);
         setIsFocus(false);
       }, 600);
     }
   }, [timer]);
-
-  console.log(timerIntervalIdRef.current);
 
   function handleKeyDown(event) {
     if (event.key === ' ') {
