@@ -16,13 +16,19 @@ export function getRandomWords(count) {
 }
 
 export function formatTimer(totalSeconds) {
-    // Hitung jam, menit, dan sisa detik
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-
-    // Format agar selalu 2 digit (misal: 3 menjadi "03")
     const pad = (num) => String(num).padStart(2, '0');
+    let result = '';
 
-    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    if (hours !== 0) {
+        result = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    } else if(minutes !== 0) {
+        result = `${pad(minutes)}:${pad(seconds)}`
+    } else {
+        result = `${pad(seconds)}`
+    }
+
+    return result;
 }
