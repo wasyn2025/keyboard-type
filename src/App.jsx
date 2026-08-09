@@ -177,7 +177,7 @@ export default function App() {
         <div className='w-full'>
 
           <div className='w-full relative mb-6'>
-            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans text-yellow-500`}>{timer}</p>
+            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans text-yellow-500`}>{Util.formatTimer(timer)}</p>
             <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-base cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
               <Earth size={18} />
               Indonesian
