@@ -1,22 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon } from 'lucide-react';
-import { wordList } from './util/words.js';
-import { classToggle } from './util/util.js';
+import * as Util from './util/util.js';
 import * as config from './util/config.js';
 import Word from './components/Word.jsx';
 
-function getRandomWords(count) {
-  const result = [];
-  for (let i = 0; i < count; i++) {
-    const randomIndex = Math.floor(Math.random() * wordList.length);
-    result.push(wordList[randomIndex]);
-  }
-
-  return result;
-}
-
 export default function App() {
-  const [words] = useState(() => getRandomWords(50));
+  const [words] = useState(() => Util.getRandomWords(50));
   const [teks, setTeks] = useState('');
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
@@ -33,58 +22,10 @@ export default function App() {
   const containerRef = useRef(null);
 
   useEffect(() => inputBoxRef.current.focus(), []);
-
-  useEffect(() => {
-    if (!isFocus) return;
-
-    timerIntervalIdRef.current = setInterval(() => {
-      setTimer((timer) => (timer <= 0 ? 0 : timer - 1));
-    }, 1000);
-
-    return () => clearInterval(timerIntervalIdRef.current)
-  }, [isFocus]);
-
-  useEffect(() => {
-    if (timer <= 0 && isFocus === true) {
-      clearInterval(timerIntervalIdRef.current);
-
-      setTimeout(() => {
-        setTimer(config.DEFAULT_TIMER);
-        setIsFocus(false);
-        setTeks('');
-        setKataAktifIndex(0);
-        setTeksHistory([]);
-      }, 600);
-    }
-  }, [timer]);
-
-  useEffect(() => {
-    calculateCaretPosition();
-  }, [teks, kataAktifIndex]);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
-    if (!elementAktif) return;
-
-    const posisiKataAktif = elementAktif.offsetTop;
-
-    if (tinggiBaris === null) {
-      if (posisiKataAktif > posisiBarisPertama) {
-        setTinggiBaris(posisiKataAktif - posisiBarisPertama);
-      }
-
-      return;
-    }
-
-    const jumlahBarisTerlewati = Math.round((posisiKataAktif - posisiBarisPertama) / tinggiBaris);
-
-    if (jumlahBarisTerlewati >= 2) {
-      setPosisiBarisPertama(prev => prev + tinggiBaris);
-      setOffsetGeser(prev => prev + tinggiBaris);
-    }
-  }, [kataAktifIndex]);
+  useEffect(() => { handleTimer(); return () => clearInterval(timerIntervalIdRef.current) }, [isFocus]);
+  useEffect(() => handleTimerOver(), [timer]);
+  useEffect(() => calculateCaretPosition(), [teks, kataAktifIndex]);
+  useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
   function handleKeyDown(event) {
     if (event.key === ' ') {
@@ -132,7 +73,7 @@ export default function App() {
         left: letterRect.left - containerRect.left
       });
     } else {
-      // caret berpindah ke kata selanjutnya karena kata target sudah selesai
+      // caret menetap di tempat atau di huruf terakhir
       const allLetters = wordElement.querySelectorAll('[data-letterindex]');
       const lastLetter = allLetters[allLetters.length - 1];
       const letterRect = lastLetter.getBoundingClientRect();
@@ -141,6 +82,52 @@ export default function App() {
         top: letterRect.top - containerRect.top,
         left: letterRect.left - containerRect.left + letterRect.width
       });
+    }
+  }
+
+  function handleShowingNewLine() {
+    if (!containerRef.current) return;
+
+    const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
+    if (!elementAktif) return;
+
+    const posisiKataAktif = elementAktif.offsetTop;
+
+    if (tinggiBaris === null) {
+      if (posisiKataAktif > posisiBarisPertama) {
+        setTinggiBaris(posisiKataAktif - posisiBarisPertama);
+      }
+
+      return;
+    }
+
+    const jumlahBarisTerlewati = Math.round((posisiKataAktif - posisiBarisPertama) / tinggiBaris);
+
+    if (jumlahBarisTerlewati >= 2) {
+      setPosisiBarisPertama(prev => prev + tinggiBaris);
+      setOffsetGeser(prev => prev + tinggiBaris);
+    }
+  }
+
+  function handleTimer() {
+    if (!isFocus) return;
+
+    timerIntervalIdRef.current = setInterval(() => {
+      setTimer((timer) => (timer <= 0 ? 0 : timer - 1));
+    }, 1000);
+  }
+
+  function handleTimerOver() {
+    if (timer <= 0 && isFocus === true) {
+      clearInterval(timerIntervalIdRef.current);
+
+      setTimeout(() => {
+        setTimer(config.DEFAULT_TIMER);
+        setIsFocus(false);
+        setTeks('');
+        setKataAktifIndex(0);
+        setTeksHistory([]);
+      }, 600);
     }
   }
 
