@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon } from 'lucide-react';
+import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
 
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
+import SmallButton from './components/SmallButton.jsx';
 
 export default function App() {
   const [words] = useState(() => Util.getRandomWords(config.DEFAULT_GENERATED_WORDS));
@@ -15,6 +16,7 @@ export default function App() {
   const [timer, setTimer] = useState(config.DEFAULT_TIMER);
   const [caretPosition, setCaretPosition] = useState({ top: 0, left: 0 });
   const [isFinished, setIsFinished] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   const [offsetGeser, setOffsetGeser] = useState(0);
   const [posisiBarisPertama, setPosisiBarisPertama] = useState(0);
@@ -25,13 +27,13 @@ export default function App() {
   const containerRef = useRef(null);
 
   useEffect(() => inputBoxRef.current.focus(), []);
-  useEffect(() => { handleTimer(); return () => clearInterval(timerIntervalIdRef.current) }, [isFocus]);
+  useEffect(() => { handleTimer(); return () => clearInterval(timerIntervalIdRef.current) }, [isFocus, isPaused]);
   useEffect(() => handleTimerOver(), [timer]);
   useEffect(() => calculateCaretPosition(), [teks, kataAktifIndex]);
   useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
   function handleSpace(event) {
-    if (event.key === ' ') {
+    if (event.key === ' ' && isPaused === false) {
       event.preventDefault();
 
       if (teks.length !== 0 && isFinished === false && kataAktifIndex !== (words.length - 1)) {
@@ -43,7 +45,7 @@ export default function App() {
   }
 
   function handleRestart() {
-    setTimer();
+    stopTimer();
 
     timerIntervalIdRef.current = '';
     setTeks('');
@@ -52,6 +54,7 @@ export default function App() {
     setIsFocus(false);
     setTimer(config.DEFAULT_TIMER);
     setIsFinished(false);
+    setIsPaused(false);
 
     setOffsetGeser(0);
     setPosisiBarisPertama(0);
@@ -114,7 +117,7 @@ export default function App() {
   }
 
   function handleTimer() {
-    if (!isFocus) return;
+    if (!isFocus || isPaused === true) return;
 
     timerIntervalIdRef.current = setInterval(() => {
       setTimer((timer) => (timer <= 0 ? 0 : timer - 1));
@@ -147,7 +150,12 @@ export default function App() {
       stopTimer();
       setIsFinished(true);
       setIsFocus(false);
+      setIsPaused(false);
     }
+  }
+
+  function handlePause() {
+    setIsPaused(prev => !prev);
   }
 
   return (
@@ -158,7 +166,7 @@ export default function App() {
         type='text'
         value={teks}
         onChange={(event) => {
-          if (isFinished === false) {
+          if (isFinished === false && isPaused === false) {
             const newText = event.target.value;
             setTeks(newText);
             setIsFocus(true);
@@ -218,9 +226,30 @@ export default function App() {
             </div>
           )}
 
-          <button onClick={handleRestart} id='restart-btn' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 pointer-events-auto w-fit block text-(--text-color) cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10`}>
-            <RotateCcw size={22} />
-          </button>
+          <div className='w-full flex justify-center gap-2'>
+            <SmallButton onClick={handleRestart}>
+              <RotateCcw size={22} />
+            </SmallButton>
+            {
+              isFocus ?
+                isPaused === false ? (
+                  <SmallButton
+                    onClick={handlePause}
+                    extraClass={`${isFocus ? 'visible' : 'invisible'}`}
+                  >
+                    <Pause size={22} />
+                  </SmallButton>
+                ) : (
+                  <SmallButton
+                    onClick={handlePause}
+                    extraClass={`${isFocus ? 'visible' : 'invisible'}`}
+                  >
+                    <Play size={22} />
+                  </SmallButton>
+                )
+                : ''
+            }
+          </div>
         </div>
       </div>
     </div>
