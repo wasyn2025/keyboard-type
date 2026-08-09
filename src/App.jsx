@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon } from 'lucide-react';
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
+
 import Word from './components/Word.jsx';
+import Caret from './components/Caret.jsx';
 
 export default function App() {
   const [words] = useState(() => Util.getRandomWords(config.DEFAULT_GENERATED_WORDS));
@@ -168,20 +170,21 @@ export default function App() {
         className='absolute opacity-0 pointer-evens-none'
       />
 
-      <div className='flex items-center dm-sans text-shade-white gap-2'>
-        <Keyboard size={34} />
-        <h1 className='text-3xl font-medium'>keyboardtype</h1>
+      <div className='flex items-center justify-between'>
+        <div className='w-full flex items-center dm-sans text-shade-white gap-2'>
+          <Keyboard size={34} className='text-(--main-color)' />
+          <h1 className='text-3xl font-medium'>keyboardtype</h1>
+        </div>
+        <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+          <Earth size={16} />
+          Indonesian
+        </span>
       </div>
 
       <div className='grow text-shade-white'>
         <div className='w-full'>
-
-          <div className='w-full relative mb-6'>
-            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity duration-500 absolute top-0 left-0 text-4xl font-medium dm-sans text-yellow-500`}>{Util.formatTimer(timer)}</p>
-            <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-shade-white text-base cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
-              <Earth size={18} />
-              Indonesian
-            </span>
+          <div className='w-full relative'>
+            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity relative bottom-6 duration-500 text-4xl dm-sans text-(--main-color)`}>{Util.formatTimer(timer)}</p>
           </div>
 
           {isFinished ? (
@@ -195,13 +198,7 @@ export default function App() {
                 className='transition-transform duration-300 relative select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
                 style={{ transform: `translateY(-${offsetGeser}px)` }}
               >
-                <div
-                  className={`absolute w-0.75 h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
-                  style={{
-                    top: `${caretPosition.top}px`,
-                    left: `${caretPosition.left}px`
-                  }}
-                />
+                <Caret isFocus={isFocus} caretPosition={caretPosition} />
                 {
                   words.map((kata, kataIndex) => (
                     <Word
@@ -221,7 +218,7 @@ export default function App() {
             </div>
           )}
 
-          <button onClick={handleRestart} id='restart-btn' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 pointer-events-auto w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10`}>
+          <button onClick={handleRestart} id='restart-btn' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 pointer-events-auto w-fit block text-(--text-color) cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10`}>
             <RotateCcw size={22} />
           </button>
         </div>

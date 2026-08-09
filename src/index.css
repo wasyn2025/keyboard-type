@@ -34,22 +34,48 @@
     font-optical-sizing: auto;
 }
 
+:root {
+    /* mountain */
+    /* --bg-color: #0f0f0f;
+    --main-color: #d8dee9;
+    --caret-color: #d8dee9;
+    --sub-color: #4c566a;
+    --sub-alt-color: #191919;
+    --text-color: #d8dee9;
+    --error-color: #bf616a;
+    --error-extra-color: #8f3f45;
+    --colorful-error-color: #bf616a;
+    --colorful-error-extra-color: #8f3f45; */
+
+    /* Gruvbox Dark */
+    --bg-color: #282828;
+    --main-color: #fabd2f;
+    --caret-color: #fabd2f;
+    --sub-color: #928374;
+    --sub-alt-color: #1d2021;
+    --text-color: #ebdbb2;
+    --error-color: #fb4934;
+    --error-extra-color: #cc241d;
+    --colorful-error-color: #fb4934;
+    --colorful-error-extra-color: #cc241d;
+}
+
 .neutral {
-    color: rgba(255, 255, 255, 0.2);
+    color: var(--sub-color);
 }
 
 .correct {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-color);
 }
 
 .incorrect {
-    color: #D95F5F;
+    color: var(--error-color);
 }
 
 .incorrect-underline {
     text-decoration-line: underline;
-    text-decoration-color: #D95F5F;
-    text-underline-offset: 10px;
+    text-decoration-color: var(--error-color);
+    text-underline-offset: 8px;
 }
 
 .visible {
@@ -61,6 +87,7 @@
 }
 
 @keyframes blink {
+
     0%,
     100% {
         opacity: 1;
