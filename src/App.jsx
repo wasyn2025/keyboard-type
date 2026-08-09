@@ -5,7 +5,7 @@ import * as config from './util/config.js';
 import Word from './components/Word.jsx';
 
 export default function App() {
-  const [words] = useState(() => Util.getRandomWords(50));
+  const [words] = useState(() => Util.getRandomWords(config.DEFAULT_GENERATED_WORDS));
   const [teks, setTeks] = useState('');
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
