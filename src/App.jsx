@@ -12,6 +12,7 @@ export default function App() {
   const [isFocus, setIsFocus] = useState(false);
   const [timer, setTimer] = useState(config.DEFAULT_TIMER);
   const [caretPosition, setCaretPosition] = useState({ top: 0, left: 0 });
+  const [isFinished, setIsFinished] = useState(false);
 
   const [offsetGeser, setOffsetGeser] = useState(0);
   const [posisiBarisPertama, setPosisiBarisPertama] = useState(0);
@@ -27,11 +28,11 @@ export default function App() {
   useEffect(() => calculateCaretPosition(), [teks, kataAktifIndex]);
   useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
-  function handleKeyDown(event) {
+  function handleSpace(event) {
     if (event.key === ' ') {
       event.preventDefault();
 
-      if (teks.length !== 0) {
+      if (teks.length !== 0 && isFinished === false && kataAktifIndex !== (words.length - 1)) {
         setTeksHistory((previousTextHistory) => [...previousTextHistory, teks.toLowerCase()]);
         setKataAktifIndex((previousWordIndex) => previousWordIndex + 1);
         setTeks('');
@@ -40,7 +41,7 @@ export default function App() {
   }
 
   function handleRestart() {
-    clearInterval(timerIntervalIdRef.current);
+    setTimer();
 
     timerIntervalIdRef.current = '';
     setTeks('');
@@ -48,6 +49,7 @@ export default function App() {
     setTeksHistory([]);
     setIsFocus(false);
     setTimer(config.DEFAULT_TIMER);
+    setIsFinished(false);
 
     setOffsetGeser(0);
     setPosisiBarisPertama(0);
@@ -119,7 +121,7 @@ export default function App() {
 
   function handleTimerOver() {
     if (timer <= 0 && isFocus === true) {
-      clearInterval(timerIntervalIdRef.current);
+      stopTimer();
 
       setTimeout(() => {
         setTimer(config.DEFAULT_TIMER);
@@ -131,6 +133,21 @@ export default function App() {
     }
   }
 
+  function stopTimer() {
+    clearInterval(timerIntervalIdRef.current);
+  }
+
+  function checkIsLastWord(newText) {
+    const isLastWord = kataAktifIndex === (words.length - 1);
+    const isSameLength = newText.length === words[kataAktifIndex].length;
+
+    if (isSameLength && isLastWord) {
+      stopTimer();
+      setIsFinished(true);
+      setIsFocus(false);
+    }
+  }
+
   return (
     <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => inputBoxRef.current.focus()}>
 
@@ -139,10 +156,15 @@ export default function App() {
         type='text'
         value={teks}
         onChange={(event) => {
-          setTeks(event.target.value);
-          setIsFocus(true);
+          if (isFinished === false) {
+            const newText = event.target.value;
+            setTeks(newText);
+            setIsFocus(true);
+
+            checkIsLastWord(newText);
+          }
         }}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleSpace}
         className='absolute opacity-0 pointer-evens-none'
       />
 
@@ -162,38 +184,44 @@ export default function App() {
             </span>
           </div>
 
-          <div className='relative mb-8 h-38 overflow-hidden'>
-            <div
-              ref={containerRef}
-              className='transition-transform duration-300 relative select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
-              style={{ transform: `translateY(-${offsetGeser}px)` }}
-            >
-              <div
-                className={`absolute w-0.75 h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
-                style={{
-                  top: `${caretPosition.top}px`,
-                  left: `${caretPosition.left}px`
-                }}
-              />
-              {
-                words.map((kata, kataIndex) => (
-                  <Word
-                    key={kataIndex}
-                    kata={kata}
-                    dataWordIndex={kataIndex}
-                    teksUntukDibandingkan={
-                      kataIndex === kataAktifIndex ?
-                        teks : kataIndex < kataAktifIndex ?
-                          teksHistory[kataIndex] : ''
-                    }
-                    isPassed={teksHistory[kataIndex] || false}
-                  />
-                ))
-              }
+          {isFinished ? (
+            <div className='flex items-center justify-center h-38 mb-8'>
+              <p className='text-[2.5rem] crimson-pro'>Finish</p>
             </div>
-          </div>
+          ) : (
+            <div className='relative mb-8 h-38 overflow-hidden'>
+              <div
+                ref={containerRef}
+                className='transition-transform duration-300 relative select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
+                style={{ transform: `translateY(-${offsetGeser}px)` }}
+              >
+                <div
+                  className={`absolute w-0.75 h-10 bg-yellow-400 transition-[top,left] duration-150 ${isFocus ? '' : 'caret-blink'}`}
+                  style={{
+                    top: `${caretPosition.top}px`,
+                    left: `${caretPosition.left}px`
+                  }}
+                />
+                {
+                  words.map((kata, kataIndex) => (
+                    <Word
+                      key={kataIndex}
+                      kata={kata}
+                      dataWordIndex={kataIndex}
+                      teksUntukDibandingkan={
+                        kataIndex === kataAktifIndex ?
+                          teks : kataIndex < kataAktifIndex ?
+                            teksHistory[kataIndex] : ''
+                      }
+                      isPassed={teksHistory[kataIndex] || false}
+                    />
+                  ))
+                }
+              </div>
+            </div>
+          )}
 
-          <button onClick={handleRestart} id='restart-btn' className='transition-opacity duration-500 pointer-events-auto w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10'>
+          <button onClick={handleRestart} id='restart-btn' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 pointer-events-auto w-fit block cursor-pointer mx-auto p-1 rounded-md hover:bg-white/10`}>
             <RotateCcw size={22} />
           </button>
         </div>
