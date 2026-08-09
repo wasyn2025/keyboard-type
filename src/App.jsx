@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
+import { generate, count } from "random-words";
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
 
@@ -8,7 +9,7 @@ import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
 
 export default function App() {
-  const [words] = useState(() => Util.getRandomWords(config.DEFAULT_GENERATED_WORDS));
+  const [words] = useState(() => generate(config.DEFAULT_GENERATED_WORDS));
   const [teks, setTeks] = useState('');
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
@@ -185,18 +186,18 @@ export default function App() {
         </div>
         <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
           <Earth size={16} />
-          Indonesian
+          English
         </span>
       </div>
 
-      <div className='grow text-shade-white'>
+      <div className='grow'>
         <div className='w-full'>
           <div className='w-full relative'>
             <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity relative bottom-6 duration-500 text-4xl dm-sans text-(--main-color)`}>{Util.formatTimer(timer)}</p>
           </div>
 
           {isFinished ? (
-            <div className='flex items-center justify-center h-38 mb-8'>
+            <div className='select-none flex items-center justify-center h-38 mb-8'>
               <p className='text-[2.5rem] crimson-pro'>Finish</p>
             </div>
           ) : (
