@@ -3,7 +3,7 @@ import { generate, count } from "random-words";
 import * as config from '../util/config.js';
 
 export function useTypingState() {
-    const [words] = useState(() => generate(config.DEFAULT_GENERATED_WORDS));
+    const [words, setWords] = useState(() => generate(config.DEFAULT_GENERATED_WORDS));
     const [teks, setTeks] = useState('');
     const [kataAktifIndex, setKataAktifIndex] = useState(0);
     const [teksHistory, setTeksHistory] = useState([]);
@@ -31,7 +31,7 @@ export function useTypingState() {
     }
 
     return {
-        words,
+        words, setWords,
         teks, setTeks,
         kataAktifIndex, setKataAktifIndex,
         teksHistory, setTeksHistory,

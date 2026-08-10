@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
+import { generate, count } from "random-words";
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
 
@@ -13,7 +14,7 @@ import { useTypingState } from './hooks/useTypingState.js';
 
 export default function App() {
   const {
-    words,
+    words, setWords,
     teks, setTeks,
     kataAktifIndex, setKataAktifIndex,
     teksHistory, setTeksHistory,
@@ -54,6 +55,7 @@ export default function App() {
     stopTimer();
 
     timerIntervalIdRef.current = '';
+    setWords(generate(config.DEFAULT_GENERATED_WORDS));
     setTeks('');
     setKataAktifIndex(0);
     setTeksHistory([]);
