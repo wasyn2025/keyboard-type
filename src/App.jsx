@@ -9,6 +9,7 @@ import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useCaretFeature } from './hooks/useCaretFeature.js';
+import { useNewLineFeature } from './hooks/useNewLineFeature.js';
 
 export default function App() {
   const [words] = useState(() => generate(config.DEFAULT_GENERATED_WORDS));
@@ -18,13 +19,8 @@ export default function App() {
   const [isFocus, setIsFocus] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-
-  const [offsetGeser, setOffsetGeser] = useState(0);
-  const [posisiBarisPertama, setPosisiBarisPertama] = useState(0);
-  const [tinggiBaris, setTinggiBaris] = useState(null);
-
   const inputBoxRef = useRef(null);
-  
+
   const {
     caretPosition,
     containerRef
@@ -33,11 +29,22 @@ export default function App() {
     kataAktifIndex
   );
 
+  const { 
+    offsetGeser,
+    setOffsetGeser,
+    setPosisiBarisPertama,
+    setTinggiBaris 
+  } = useNewLineFeature(
+    kataAktifIndex, 
+    containerRef
+  );
+
   const {
     timer,
     setTimer,
+    timerIntervalIdRef,
     stopTimer,
-    handleTimerOver
+    handleTimerOver,
   } = useTimer(
     config.DEFAULT_TIMER,
     isFocus,
@@ -45,11 +52,11 @@ export default function App() {
     setIsFocus,
     setTeks,
     setKataAktifIndex,
-    setTeksHistory
+    setTeksHistory,
+    setIsFinished,
   );
 
   useEffect(() => inputBoxRef.current.focus(), []);
-  useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
   function handleSpace(event) {
     if (event.key === ' ' && isPaused === false) {
@@ -78,31 +85,6 @@ export default function App() {
     setOffsetGeser(0);
     setPosisiBarisPertama(0);
     setTinggiBaris(null);
-  }
-
-  
-  function handleShowingNewLine() {
-    if (!containerRef.current) return;
-
-    const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
-    if (!elementAktif) return;
-
-    const posisiKataAktif = elementAktif.offsetTop;
-
-    if (tinggiBaris === null) {
-      if (posisiKataAktif > posisiBarisPertama) {
-        setTinggiBaris(posisiKataAktif - posisiBarisPertama);
-      }
-
-      return;
-    }
-
-    const jumlahBarisTerlewati = Math.round((posisiKataAktif - posisiBarisPertama) / tinggiBaris);
-
-    if (jumlahBarisTerlewati >= 2) {
-      setPosisiBarisPertama(prev => prev + tinggiBaris);
-      setOffsetGeser(prev => prev + tinggiBaris);
-    }
   }
 
   function checkIsLastWord(newText) {

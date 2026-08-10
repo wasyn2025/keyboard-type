@@ -7,7 +7,8 @@ export function useTimer(
     setIsFocus,
     setTeks,
     setKataAktifIndex,
-    setTeksHistory
+    setTeksHistory,
+    setIsFinished,
 ) {
     const [timer, setTimer] = useState(initialTime);
     const timerIntervalIdRef = useRef(null);
@@ -29,10 +30,11 @@ export function useTimer(
 
             setTimeout(() => {
                 setTimer(initialTime);
-                setIsFocus(false);
                 setTeks('');
                 setKataAktifIndex(0);
                 setTeksHistory([]);
+                setIsFocus(false);
+                setIsFinished(true);
             }, 600);
         }
     }
@@ -41,5 +43,5 @@ export function useTimer(
         clearInterval(timerIntervalIdRef.current);
     }
 
-    return { timer, setTimer, stopTimer, handleTimerOver };
+    return { timer, setTimer, timerIntervalIdRef, stopTimer, handleTimerOver };
 }
