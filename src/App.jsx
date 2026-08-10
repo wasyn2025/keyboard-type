@@ -7,6 +7,8 @@ import * as config from './util/config.js';
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
+import { useTimer } from './hooks/useTimer.js';
+import { useCaretFeature } from './hooks/useCaretFeature.js';
 
 export default function App() {
   const [words] = useState(() => generate(config.DEFAULT_GENERATED_WORDS));
@@ -14,8 +16,6 @@ export default function App() {
   const [kataAktifIndex, setKataAktifIndex] = useState(0);
   const [teksHistory, setTeksHistory] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [timer, setTimer] = useState(config.DEFAULT_TIMER);
-  const [caretPosition, setCaretPosition] = useState({ top: 0, left: 0 });
   const [isFinished, setIsFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -24,13 +24,31 @@ export default function App() {
   const [tinggiBaris, setTinggiBaris] = useState(null);
 
   const inputBoxRef = useRef(null);
-  const timerIntervalIdRef = useRef(null);
-  const containerRef = useRef(null);
+  
+  const {
+    caretPosition,
+    containerRef
+  } = useCaretFeature(
+    teks,
+    kataAktifIndex
+  );
+
+  const {
+    timer,
+    setTimer,
+    stopTimer,
+    handleTimerOver
+  } = useTimer(
+    config.DEFAULT_TIMER,
+    isFocus,
+    isPaused,
+    setIsFocus,
+    setTeks,
+    setKataAktifIndex,
+    setTeksHistory
+  );
 
   useEffect(() => inputBoxRef.current.focus(), []);
-  useEffect(() => { handleTimer(); return () => clearInterval(timerIntervalIdRef.current) }, [isFocus, isPaused]);
-  useEffect(() => handleTimerOver(), [timer]);
-  useEffect(() => calculateCaretPosition(), [teks, kataAktifIndex]);
   useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
   function handleSpace(event) {
@@ -62,37 +80,7 @@ export default function App() {
     setTinggiBaris(null);
   }
 
-  function calculateCaretPosition() {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const wordElement = container.querySelector(`[data-wordindex="${kataAktifIndex}`);
-    if (!wordElement) return;
-
-    const hurufAktifIndex = teks.length;
-    const containerRect = container.getBoundingClientRect();
-    let letterElement = wordElement.querySelector(`[data-letterindex="${hurufAktifIndex}"]`);
-
-    if (letterElement) {
-      // caret berjalan pada huruf di kata terget yang masih aktif
-      const letterRect = letterElement.getBoundingClientRect();
-      setCaretPosition({
-        top: letterRect.top - containerRect.top,
-        left: letterRect.left - containerRect.left
-      });
-    } else {
-      // caret menetap di tempat atau di huruf terakhir
-      const allLetters = wordElement.querySelectorAll('[data-letterindex]');
-      const lastLetter = allLetters[allLetters.length - 1];
-      const letterRect = lastLetter.getBoundingClientRect();
-
-      setCaretPosition({
-        top: letterRect.top - containerRect.top,
-        left: letterRect.left - containerRect.left + letterRect.width
-      });
-    }
-  }
-
+  
   function handleShowingNewLine() {
     if (!containerRef.current) return;
 
@@ -115,32 +103,6 @@ export default function App() {
       setPosisiBarisPertama(prev => prev + tinggiBaris);
       setOffsetGeser(prev => prev + tinggiBaris);
     }
-  }
-
-  function handleTimer() {
-    if (!isFocus || isPaused === true) return;
-
-    timerIntervalIdRef.current = setInterval(() => {
-      setTimer((timer) => (timer <= 0 ? 0 : timer - 1));
-    }, 1000);
-  }
-
-  function handleTimerOver() {
-    if (timer <= 0 && isFocus === true) {
-      stopTimer();
-
-      setTimeout(() => {
-        setTimer(config.DEFAULT_TIMER);
-        setIsFocus(false);
-        setTeks('');
-        setKataAktifIndex(0);
-        setTeksHistory([]);
-      }, 600);
-    }
-  }
-
-  function stopTimer() {
-    clearInterval(timerIntervalIdRef.current);
   }
 
   function checkIsLastWord(newText) {
