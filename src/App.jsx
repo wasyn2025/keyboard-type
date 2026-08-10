@@ -21,39 +21,28 @@ export default function App() {
   const [isPaused, setIsPaused] = useState(false);
   const inputBoxRef = useRef(null);
 
-  const {
-    caretPosition,
-    containerRef
-  } = useCaretFeature(
+  const { caretPosition, setCaretPosition, containerRef } = useCaretFeature(
     teks,
     kataAktifIndex
   );
 
-  const { 
-    offsetGeser,
-    setOffsetGeser,
-    setPosisiBarisPertama,
-    setTinggiBaris 
-  } = useNewLineFeature(
-    kataAktifIndex, 
+  const { offsetGeser, setOffsetGeser, setPosisiBarisPertama, setTinggiBaris } = useNewLineFeature(
+    kataAktifIndex,
     containerRef
   );
 
-  const {
-    timer,
-    setTimer,
-    timerIntervalIdRef,
-    stopTimer,
-    handleTimerOver,
-  } = useTimer(
+  const { timer, setTimer, timerIntervalIdRef, stopTimer, handleTimerOver } = useTimer(
     config.DEFAULT_TIMER,
     isFocus,
     isPaused,
-    setIsFocus,
-    setTeks,
-    setKataAktifIndex,
-    setTeksHistory,
-    setIsFinished,
+    () => {
+      setTeks('');
+      setKataAktifIndex(0);
+      setTeksHistory([]);
+      setIsFocus(false);
+      setIsFinished(true);
+      setCaretPosition({ top: 0, left: 0 });
+    }
   );
 
   useEffect(() => inputBoxRef.current.focus(), []);

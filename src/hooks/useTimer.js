@@ -4,11 +4,7 @@ export function useTimer(
     initialTime,
     isFocus,
     isPaused,
-    setIsFocus,
-    setTeks,
-    setKataAktifIndex,
-    setTeksHistory,
-    setIsFinished,
+    handleRestart,
 ) {
     const [timer, setTimer] = useState(initialTime);
     const timerIntervalIdRef = useRef(null);
@@ -29,12 +25,7 @@ export function useTimer(
             stopTimer();
 
             setTimeout(() => {
-                setTimer(initialTime);
-                setTeks('');
-                setKataAktifIndex(0);
-                setTeksHistory([]);
-                setIsFocus(false);
-                setIsFinished(true);
+                handleRestart();
             }, 600);
         }
     }

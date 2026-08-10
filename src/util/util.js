@@ -27,7 +27,7 @@ export function formatTimer(totalSeconds) {
     } else if(minutes !== 0) {
         result = `${pad(minutes)}:${pad(seconds)}`
     } else {
-        result = `${pad(seconds)}`
+        result = `${seconds}`
     }
 
     return result;
