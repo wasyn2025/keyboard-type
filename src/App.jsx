@@ -123,10 +123,10 @@ export default function App() {
               <p className='text-[2.5rem] crimson-pro'>Finish</p>
             </div>
           ) : (
-            <div className='relative mb-8 h-38 overflow-hidden'>
+            <div className='relative mb-8 h-42 overflow-hidden'>
               <div
                 ref={containerRef}
-                className='transition-transform duration-300 relative select-none text-[2.5rem] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
+                className='transition-transform duration-300 relative select-none text-[44px] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
                 style={{ transform: `translateY(-${offsetGeser}px)` }}
               >
                 <Caret isFocus={isFocus} caretPosition={caretPosition} />
