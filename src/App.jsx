@@ -101,12 +101,12 @@ export default function App() {
         className='absolute opacity-0 pointer-evens-none'
       />
 
-      <div className='flex items-center justify-between'>
-        <div className='w-full flex items-center dm-sans text-shade-white gap-2'>
+      <div className='flex items-center font-general-sans justify-between'>
+        <div className='w-full flex items-center text-shade-white gap-2'>
           <Keyboard size={34} className='text-(--main-color)' />
           <h1 className='text-3xl font-medium'>keyboardtype</h1>
         </div>
-        <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center dm-sans gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+        <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
           <Earth size={16} />
           English
         </span>
@@ -115,18 +115,18 @@ export default function App() {
       <div className='grow'>
         <div className='w-full'>
           <div className='w-full relative'>
-            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity relative bottom-6 duration-500 text-4xl dm-sans text-(--main-color)`}>{Util.formatTimer(timer)}</p>
+            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity relative bottom-6 duration-500 text-4xl font-general-sans text-(--main-color)`}>{Util.formatTimer(timer)}</p>
           </div>
 
           {isFinished ? (
             <div className='select-none flex items-center justify-center h-38 mb-8'>
-              <p className='text-[2.5rem] crimson-pro'>Finish</p>
+              <p className='text-[2.5rem] font-rowan text-(--text-color)'>Fin...</p>
             </div>
           ) : (
-            <div className='relative mb-8 h-42 overflow-hidden'>
+            <div className='relative mb-8 h-38 overflow-hidden'>
               <div
                 ref={containerRef}
-                className='transition-transform duration-300 relative select-none text-[44px] leading-none crimson-pro flex flex-wrap gap-x-3 gap-y-3'
+                className='transition-transform duration-300 relative select-none text-[2.5rem] leading-none font-rowan flex flex-wrap gap-x-3 gap-y-3'
                 style={{ transform: `translateY(-${offsetGeser}px)` }}
               >
                 <Caret isFocus={isFocus} caretPosition={caretPosition} />

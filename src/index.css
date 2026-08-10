@@ -1,37 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import "./rowan.css";
+@import "./generalsans.css";
 @import "tailwindcss";
 
 @theme {
     --color-shade-white: rgb(217, 217, 217);
-}
-
-/* for debug */
-.border-white {
-    border: 2px solid white;
-}
-
-.border-red {
-    border: 2px solid red;
-}
-
-.border-yellow {
-    border: 2px solid yellow;
-}
-
-.border-blue {
-    border: 2px solid blue;
-}
-
-/* actual css for wide use */
-.crimson-pro {
-    font-family: "Crimson Pro", serif;
-    color: rgb(198, 198, 198);
-    font-optical-sizing: auto;
-}
-
-.dm-sans {
-    font-family: "DM Sans", sans-serif;
-    font-optical-sizing: auto;
+    --font-rowan: "Rowan", sans-serif;
+    --font-general-sans: "GeneralSans", sans-serif;
 }
 
 :root {
@@ -60,6 +34,24 @@
     --colorful-error-extra-color: #cc241d;
 }
 
+/* for debug */
+.border-white {
+    border: 2px solid white;
+}
+
+.border-red {
+    border: 2px solid red;
+}
+
+.border-yellow {
+    border: 2px solid yellow;
+}
+
+.border-blue {
+    border: 2px solid blue;
+}
+
+/* actual css for wide use */
 .neutral {
     color: var(--sub-color);
 }

@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Rowan';
+    src: url('./assets/fonts/Rowan/Rowan-Regular.woff2') format('woff2'),
+        url('./assets/fonts/Rowan-Regular.woff') format('woff'),
+        url('./assets/fonts/Rowan-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+}
