@@ -91,10 +91,13 @@ export default function App() {
         onChange={(event) => {
           if (isFinished === false && isPaused === false) {
             const newText = event.target.value;
-            setTeks(newText);
-            setIsFocus(true);
 
-            checkIsLastWord(newText);
+            if (Util.limitTyping(newText, kataAktifIndex, containerRef) === false) {
+              setTeks(newText);
+              setIsFocus(true);
+
+              checkIsLastWord(newText);
+            }
           }
         }}
         onKeyDown={handleSpace}

@@ -24,11 +24,18 @@ export function formatTimer(totalSeconds) {
 
     if (hours !== 0) {
         result = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    } else if(minutes !== 0) {
+    } else if (minutes !== 0) {
         result = `${pad(minutes)}:${pad(seconds)}`
     } else {
         result = `${seconds}`
     }
 
     return result;
+}
+
+export function limitTyping(typedWords, kataAktifIndex, containerRef) {
+    const currentWord = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
+    const currentWordLength = currentWord.querySelectorAll('span').length;
+
+    return typedWords.length > currentWordLength ? true : false;
 }
