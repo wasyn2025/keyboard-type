@@ -16,6 +16,8 @@ import { useTimer } from './hooks/useTimer.js';
 import { useCaretFeature } from './hooks/useCaretFeature.js';
 import { useNewLineFeature } from './hooks/useNewLineFeature.js';
 import { useTypingState } from './hooks/useTypingState.js';
+import { useWpmCalculation } from './hooks/useWpmCalculation.js';
+import { useAccCalculation } from './hooks/useAccCalculation.js';
 
 export default function App() {
   const {
@@ -61,11 +63,19 @@ export default function App() {
     }
   );
 
-  // state variable baru
-  const [wpm, setWpm] = useState(0);
-  const [acc, setAcc] = useState(0);
-  const [totalKeyStrokes, setTotalKeyStrokes] = useState(0);
-  const [correctKeyStrokes, setCorrectKeyStrokes] = useState(0);
+  const {
+    wpm,
+    setWpm,
+    calculateCorrectChars,
+    calculateWpm
+  } = useWpmCalculation(teksHistory, words);
+
+  const {
+    acc, setAcc,
+    totalKeyStrokes, setTotalKeyStrokes,
+    correctKeyStrokes, setCorrectKeyStrokes,
+    calculateAcc
+  } = useAccCalculation();
 
   useEffect(() => {
     if (isFinished === true) {
@@ -78,29 +88,6 @@ export default function App() {
       setAcc(accResult);
     }
   }, [isFinished]);
-
-  function handleRestart() {
-    stopTimer();
-
-    timerIntervalIdRef.current = '';
-    setWords(generate(config.DEFAULT_GENERATED_WORDS));
-    setTeks('');
-    setKataAktifIndex(0);
-    setTeksHistory([]);
-    setIsFocus(false);
-    setTimer(config.DEFAULT_TIMER);
-    setIsFinished(false);
-    setIsPaused(false);
-
-    setOffsetGeser(0);
-    setPosisiBarisPertama(0);
-    setTinggiBaris(null);
-
-    setTotalKeyStrokes(0);
-    setCorrectKeyStrokes(0);
-    setWpm(0);
-    setAcc(0);
-  }
 
   function checkIsLastWord(newText) {
     const isLastWord = kataAktifIndex === (words.length - 1);
@@ -142,34 +129,27 @@ export default function App() {
     }
   }
 
-  function calculateCorrectChars(teksHistory, words) {
-    let correctChars = 0;
+  function handleRestart() {
+    stopTimer();
 
-    for (let i = 0; i < teksHistory.length; i++) {
-      const typedWord = teksHistory[i];
-      const targetWord = words[i];
+    timerIntervalIdRef.current = '';
+    setWords(generate(config.DEFAULT_GENERATED_WORDS));
+    setTeks('');
+    setKataAktifIndex(0);
+    setTeksHistory([]);
+    setIsFocus(false);
+    setTimer(config.DEFAULT_TIMER);
+    setIsFinished(false);
+    setIsPaused(false);
 
-      for (let j = 0; j < typedWord.length; j++) {
-        if (typedWord[j] === targetWord[j]) {
-          correctChars++;
-        }
-      }
-    }
+    setOffsetGeser(0);
+    setPosisiBarisPertama(0);
+    setTinggiBaris(null);
 
-    return correctChars;
-  }
-
-  function calculateWpm(correctChars, elapsedSeconds) {
-    const elapsedMinutes = elapsedSeconds / 60;
-    if (elapsedMinutes <= 0) return 0;
-
-    return Math.round((correctChars / 5) / elapsedMinutes);
-  }
-
-  function calculateAcc(correctKeyStrokes, totalKeyStrokes) {
-    if (totalKeyStrokes === 0) return 0;
-
-    return Math.round((correctKeyStrokes / totalKeyStrokes) * 100);
+    setTotalKeyStrokes(0);
+    setCorrectKeyStrokes(0);
+    setWpm(0);
+    setAcc(0);
   }
 
   return (
