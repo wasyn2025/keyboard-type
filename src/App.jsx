@@ -53,19 +53,29 @@ export default function App() {
       setIsFocus(false);
       setIsFinished(true);
       setCaretPosition({ top: 0, left: 0 });
+
+      setTotalKeyStrokes(0);
+      setCorrectKeyStrokes(0);
+      setWpm(0);
+      setAcc(0);
     }
   );
 
   // state variable baru
   const [wpm, setWpm] = useState(0);
+  const [acc, setAcc] = useState(0);
+  const [totalKeyStrokes, setTotalKeyStrokes] = useState(0);
+  const [correctKeyStrokes, setCorrectKeyStrokes] = useState(0);
 
   useEffect(() => {
     if (isFinished === true) {
       const correctChars = calculateCorrectChars(teksHistory, words);
       const elapsedSeconds = config.DEFAULT_TIMER - timer;
       const wpmResult = calculateWpm(correctChars, elapsedSeconds);
+      const accResult = calculateAcc(correctKeyStrokes, totalKeyStrokes);
 
       setWpm(wpmResult);
+      setAcc(accResult);
     }
   }, [isFinished]);
 
@@ -85,6 +95,11 @@ export default function App() {
     setOffsetGeser(0);
     setPosisiBarisPertama(0);
     setTinggiBaris(null);
+
+    setTotalKeyStrokes(0);
+    setCorrectKeyStrokes(0);
+    setWpm(0);
+    setAcc(0);
   }
 
   function checkIsLastWord(newText) {
@@ -108,6 +123,17 @@ export default function App() {
       const newText = event.target.value;
 
       if (Util.limitTyping(newText, kataAktifIndex, containerRef) === false) {
+        if (newText.length > teks.length) {
+          const newCharIndex = newText.length - 1;
+          const typedChar = newText[newCharIndex];
+          const targetChar = words[kataAktifIndex][newCharIndex];
+
+          setTotalKeyStrokes((prevTotal) => prevTotal + 1);
+          if (typedChar === targetChar) {
+            setCorrectKeyStrokes((prevCorrect) => prevCorrect + 1);
+          }
+        }
+
         setTeks(newText);
         setIsFocus(true);
 
@@ -138,6 +164,12 @@ export default function App() {
     if (elapsedMinutes <= 0) return 0;
 
     return Math.round((correctChars / 5) / elapsedMinutes);
+  }
+
+  function calculateAcc(correctKeyStrokes, totalKeyStrokes) {
+    if (totalKeyStrokes === 0) return 0;
+
+    return Math.round((correctKeyStrokes / totalKeyStrokes) * 100);
   }
 
   return (
@@ -176,8 +208,8 @@ export default function App() {
               <div className='mx-auto w-fit'>
                 <CounterBlockGrid>
                   <CounterBlock type={'WPM'} data={wpm} />
-                  <CounterBlock type={'Accuracy'} data={67} suffix='%' />
-                  <CounterBlock type={'Consistency'} data={87} suffix='%' />
+                  <CounterBlock type={'Accuracy'} data={acc} suffix='%' />
+                  <CounterBlock type={'Consistency'} data={0} suffix='%' />
                   <CounterBlock type={'Time'} data={config.DEFAULT_TIMER - timer} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
                 </CounterBlockGrid>
                 <TestMetaDataContainer>
