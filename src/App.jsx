@@ -75,9 +75,15 @@ export default function App() {
 
     if (isSameLength && isLastWord) {
       stopTimer();
+
+      setTeksHistory((previousTextHistory) => [...previousTextHistory, newText.toLowerCase()]);
+      setKataAktifIndex((previousWordIndex) => previousWordIndex + 1);
+      setTeks('');
       setIsFinished(true);
       setIsFocus(false);
       setIsPaused(false);
+
+      console.log('Current: ' + teksHistory);
     }
   }
 
