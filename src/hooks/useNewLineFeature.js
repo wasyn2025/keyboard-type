@@ -31,5 +31,11 @@ export function useNewLineFeature(kataAktifIndex, containerRef) {
         }
     }
 
-    return { offsetGeser, setOffsetGeser, setPosisiBarisPertama, setTinggiBaris };
+    function restartNewLineState() {
+        setOffsetGeser(0);
+        setPosisiBarisPertama(0);
+        setTinggiBaris(null);
+    }
+
+    return { offsetGeser, setOffsetGeser, setPosisiBarisPertama, setTinggiBaris, restartNewLineState };
 }

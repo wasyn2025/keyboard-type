@@ -29,5 +29,10 @@ export function useTimer(initialTime, isFocus, isPaused, handleRestart,) {
         clearInterval(timerIntervalIdRef.current);
     }
 
-    return { timer, setTimer, timerIntervalIdRef, stopTimer, handleTimerOver };
+    function restartTimerState() {
+        timerIntervalIdRef.current = '';
+        setTimer(initialTime);
+    }
+
+    return { timer, setTimer, timerIntervalIdRef, stopTimer, handleTimerOver, restartTimerState };
 }

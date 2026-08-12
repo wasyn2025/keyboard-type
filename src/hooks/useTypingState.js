@@ -30,6 +30,16 @@ export function useTypingState() {
         setIsPaused(prev => !prev);
     }
 
+    function restartTypingState() {
+        setWords(generate(config.DEFAULT_GENERATED_WORDS));
+        setTeks('');
+        setKataAktifIndex(0);
+        setTeksHistory([]);
+        setIsFocus(false);
+        setIsFinished(false);
+        setIsPaused(false);
+    }
+
     return {
         words, setWords,
         teks, setTeks,
@@ -41,6 +51,7 @@ export function useTypingState() {
         inputBoxRef,
 
         handlePause,
-        handleSpace
+        handleSpace,
+        restartTypingState
     }
 }

@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 
 export function useWpmCalculation(teksHistory, words) {
     const [wpm, setWpm] = useState(0);
@@ -27,5 +27,9 @@ export function useWpmCalculation(teksHistory, words) {
         return Math.round((correctChars / 5) / elapsedMinutes);
     }
 
-    return {wpm, setWpm, calculateCorrectChars, calculateWpm};
+    function restartWpmState() {
+        setWpm(0);
+    }
+
+    return { wpm, setWpm, calculateCorrectChars, calculateWpm, restartWpmState };
 }

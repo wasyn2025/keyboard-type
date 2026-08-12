@@ -36,10 +36,10 @@ export function useConsistency(timer, initialTime, isFocus, isFinished, correctK
         setConsistency(Math.round(result));
     }, [isFinished]);
 
-    function resetConsistency() {
+    function restartConsistency() {
         wpmSampleRef.current = [];
         setConsistency(0);
     }
 
-    return { consistency, resetConsistency };
+    return { consistency, restartConsistency };
 }

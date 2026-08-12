@@ -37,5 +37,9 @@ export function useCaretFeature(teks, kataAktifIndex) {
         }
     }
 
-    return { caretPosition, setCaretPosition, containerRef };
+    function restartCaretState() {
+        setCaretPosition({ top: 0, left: 0 });
+    }
+
+    return { caretPosition, setCaretPosition, containerRef, restartCaretState };
 }

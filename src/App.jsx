@@ -37,34 +37,46 @@ export default function App() {
 
     handleSpace,
     handlePause,
+    restartTypingState
   } = useTypingState();
 
-  const { caretPosition, setCaretPosition, containerRef } = useCaretFeature(
+  const {
+    caretPosition,
+    setCaretPosition,
+    containerRef,
+    restartCaretState
+  } = useCaretFeature(
     teks,
     kataAktifIndex
   );
 
-  const { offsetGeser, setOffsetGeser, setPosisiBarisPertama, setTinggiBaris } = useNewLineFeature(
+  const {
+    offsetGeser,
+    setOffsetGeser,
+    setPosisiBarisPertama,
+    setTinggiBaris,
+    restartNewLineState
+  } = useNewLineFeature(
     kataAktifIndex,
     containerRef
   );
 
-  const { timer, setTimer, timerIntervalIdRef, stopTimer, handleTimerOver } = useTimer(
+  const {
+    timer,
+    setTimer,
+    timerIntervalIdRef,
+    stopTimer,
+    handleTimerOver,
+    restartTimerState
+  } = useTimer(
     config.DEFAULT_TIMER,
     isFocus,
     isPaused,
     () => {
-      setTeks('');
-      setKataAktifIndex(0);
-      setTeksHistory([]);
       setIsFocus(false);
       setIsFinished(true);
-      setCaretPosition({ top: 0, left: 0 });
-
-      setTotalKeyStrokes(0);
-      setCorrectKeyStrokes(0);
-      setWpm(0);
-      setAcc(0);
+      setIsPaused(false);
+      restartCaretState();
     }
   );
 
@@ -72,19 +84,21 @@ export default function App() {
     wpm,
     setWpm,
     calculateCorrectChars,
-    calculateWpm
+    calculateWpm,
+    restartWpmState
   } = useWpmCalculation(teksHistory, words);
 
   const {
     acc, setAcc,
     totalKeyStrokes, setTotalKeyStrokes,
     correctKeyStrokes, setCorrectKeyStrokes,
-    calculateAcc
+    calculateAcc,
+    restartAccState
   } = useAccCalculation();
 
   const {
     consistency,
-    resetConsistency
+    restartConsistency
   } = useConsistency(
     timer,
     config.DEFAULT_TIMER,
@@ -148,26 +162,13 @@ export default function App() {
   function handleRestart() {
     stopTimer();
 
-    timerIntervalIdRef.current = '';
-    setWords(generate(config.DEFAULT_GENERATED_WORDS));
-    setTeks('');
-    setKataAktifIndex(0);
-    setTeksHistory([]);
-    setIsFocus(false);
-    setTimer(config.DEFAULT_TIMER);
-    setIsFinished(false);
-    setIsPaused(false);
-
-    setOffsetGeser(0);
-    setPosisiBarisPertama(0);
-    setTinggiBaris(null);
-
-    setTotalKeyStrokes(0);
-    setCorrectKeyStrokes(0);
-    setWpm(0);
-    setAcc(0);
-
-    resetConsistency();
+    restartTypingState();
+    restartTimerState();
+    restartCaretState();
+    restartNewLineState();
+    restartWpmState();
+    restartAccState();
+    restartConsistency();
   }
 
   return (

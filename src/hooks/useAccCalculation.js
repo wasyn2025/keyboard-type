@@ -11,11 +11,18 @@ export function useAccCalculation() {
         return Math.round((correctKeyStrokes / totalKeyStrokes) * 100);
     }
 
+    function restartAccState() {
+        setTotalKeyStrokes(0);
+        setCorrectKeyStrokes(0);
+        setAcc(0);
+    }
+
     return {
         acc, setAcc,
         totalKeyStrokes, setTotalKeyStrokes,
         correctKeyStrokes, setCorrectKeyStrokes,
 
-        calculateAcc
+        calculateAcc,
+        restartAccState
     }
 }
