@@ -7,6 +7,8 @@ import * as config from './util/config.js';
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
+import CounterBlock from './components/CounterBlock.jsx';
+import CounterBlockGrid from './components/CounterBlockGrid.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useCaretFeature } from './hooks/useCaretFeature.js';
 import { useNewLineFeature } from './hooks/useNewLineFeature.js';
@@ -168,24 +170,12 @@ export default function App() {
           {isFinished ? (
             <div className='select-none mb-8 font-general-sans'>
               <div className='mx-auto w-fit'>
-                <div className='grid grid-cols-[repeat(4,150px)] mb-3'>
-                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
-                    <span className='font-medium text-5xl'>{wpm}</span>
-                    <span className='text-sm'>WPM</span>
-                  </div>
-                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
-                    <span className='font-medium text-5xl'>87<span className='text-2xl'>%</span></span>
-                    <span className='text-sm'>Accuracy</span>
-                  </div>
-                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
-                    <span className='font-medium text-5xl'>65<span className='text-2xl'>%</span></span>
-                    <span className='text-sm'>Consistency</span>
-                  </div>
-                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
-                    <span className='font-medium text-5xl'>34<span className='text-2xl'>s</span></span>
-                    <span className='text-sm'>Time</span>
-                  </div>
-                </div>
+                <CounterBlockGrid>
+                  <CounterBlock type={'WPM'} data={wpm} />
+                  <CounterBlock type={'Accuracy'} data={67} suffix='%' />
+                  <CounterBlock type={'Consistency'} data={87} suffix='%' />
+                  <CounterBlock type={'Time'} data={34} suffix='s' />
+                </CounterBlockGrid>
                 <div className='flex items-center justify-between'>
                   <p className='text-(--sub-color) text-base'>{config.DEFAULT_GENERATED_WORDS} words, english</p>
                   <p className='text-(--sub-color) text-base'>00:00:34</p>
