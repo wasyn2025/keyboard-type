@@ -51,6 +51,19 @@ export default function App() {
     }
   );
 
+  // state variable baru
+  const [wpm, setWpm] = useState(0);
+
+  useEffect(() => {
+    if (isFinished === true) {
+      const correctChars = calculateCorrectChars(teksHistory, words);
+      const elapsedSeconds = config.DEFAULT_TIMER - timer;
+      const wpmResult = calculateWpm(correctChars, elapsedSeconds);
+
+      setWpm(wpmResult);
+    }
+  }, [isFinished]);
+
   function handleRestart() {
     stopTimer();
 
@@ -74,6 +87,7 @@ export default function App() {
     const isSameLength = newText.length === words[kataAktifIndex].length;
 
     if (isSameLength && isLastWord) {
+      console.log('timer : ' + timer);
       stopTimer();
 
       setTeksHistory((previousTextHistory) => [...previousTextHistory, newText.toLowerCase()]);
@@ -85,6 +99,43 @@ export default function App() {
     }
   }
 
+  function handleTyping(event) {
+    if (isFinished === false && isPaused === false) {
+      const newText = event.target.value;
+
+      if (Util.limitTyping(newText, kataAktifIndex, containerRef) === false) {
+        setTeks(newText);
+        setIsFocus(true);
+
+        checkIsLastWord(newText);
+      }
+    }
+  }
+
+  function calculateCorrectChars(teksHistory, words) {
+    let correctChars = 0;
+
+    for (let i = 0; i < teksHistory.length; i++) {
+      const typedWord = teksHistory[i];
+      const targetWord = words[i];
+
+      for (let j = 0; j < typedWord.length; j++) {
+        if (typedWord[j] === targetWord[j]) {
+          correctChars++;
+        }
+      }
+    }
+
+    return correctChars;
+  }
+
+  function calculateWpm(correctChars, elapsedSeconds) {
+    const elapsedMinutes = elapsedSeconds / 60;
+    if (elapsedMinutes <= 0) return 0;
+
+    return Math.round((correctChars / 5) / elapsedMinutes);
+  }
+
   return (
     <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => inputBoxRef.current.focus()}>
 
@@ -92,18 +143,7 @@ export default function App() {
         ref={inputBoxRef}
         type='text'
         value={teks}
-        onChange={(event) => {
-          if (isFinished === false && isPaused === false) {
-            const newText = event.target.value;
-
-            if (Util.limitTyping(newText, kataAktifIndex, containerRef) === false) {
-              setTeks(newText);
-              setIsFocus(true);
-
-              checkIsLastWord(newText);
-            }
-          }
-        }}
+        onChange={(event) => handleTyping(event)}
         onKeyDown={handleSpace}
         className='absolute opacity-0 pointer-evens-none'
       />
@@ -126,8 +166,31 @@ export default function App() {
           </div>
 
           {isFinished ? (
-            <div className='select-none flex items-center justify-center h-38 mb-8'>
-              <p className='text-[2.5rem] font-rowan text-(--text-color)'>Fin...</p>
+            <div className='select-none mb-8 font-general-sans'>
+              <div className='mx-auto w-fit'>
+                <div className='grid grid-cols-[repeat(4,150px)] mb-3'>
+                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
+                    <span className='font-medium text-5xl'>{wpm}</span>
+                    <span className='text-sm'>WPM</span>
+                  </div>
+                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
+                    <span className='font-medium text-5xl'>87<span className='text-2xl'>%</span></span>
+                    <span className='text-sm'>Accuracy</span>
+                  </div>
+                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
+                    <span className='font-medium text-5xl'>65<span className='text-2xl'>%</span></span>
+                    <span className='text-sm'>Consistency</span>
+                  </div>
+                  <div className='aspect-square gap-2 flex flex-col items-center justify-center text-(--text-color) border border-(--sub-color)'>
+                    <span className='font-medium text-5xl'>34<span className='text-2xl'>s</span></span>
+                    <span className='text-sm'>Time</span>
+                  </div>
+                </div>
+                <div className='flex items-center justify-between'>
+                  <p className='text-(--sub-color) text-base'>{config.DEFAULT_GENERATED_WORDS} words, english</p>
+                  <p className='text-(--sub-color) text-base'>00:00:34</p>
+                </div>
+              </div>
             </div>
           ) : (
             <div className='relative mb-8 h-38 overflow-hidden'>
