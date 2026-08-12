@@ -4,6 +4,8 @@ import { generate, count } from "random-words";
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
 
+// Heyyy, i'm you from the past :D
+
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
@@ -20,6 +22,7 @@ import { useNewLineFeature } from './hooks/useNewLineFeature.js';
 import { useTypingState } from './hooks/useTypingState.js';
 import { useWpmCalculation } from './hooks/useWpmCalculation.js';
 import { useAccCalculation } from './hooks/useAccCalculation.js';
+import { useConsistency } from './hooks/useConsistency.js';
 
 export default function App() {
   const {
@@ -78,6 +81,17 @@ export default function App() {
     correctKeyStrokes, setCorrectKeyStrokes,
     calculateAcc
   } = useAccCalculation();
+
+  const {
+    consistency,
+    resetConsistency
+  } = useConsistency(
+    timer,
+    config.DEFAULT_TIMER,
+    isFocus,
+    isFinished,
+    correctKeyStrokes
+  );
 
   useEffect(() => {
     if (isFinished === true) {
@@ -152,6 +166,8 @@ export default function App() {
     setCorrectKeyStrokes(0);
     setWpm(0);
     setAcc(0);
+
+    resetConsistency();
   }
 
   return (
@@ -189,7 +205,7 @@ export default function App() {
                 <CounterBlockGrid>
                   <CounterBlock type={'WPM'} data={wpm} />
                   <CounterBlock type={'Accuracy'} data={acc} suffix='%' />
-                  <CounterBlock type={'Consistency'} data={0} suffix='%' />
+                  <CounterBlock type={'Consistency'} data={consistency} suffix='%' />
                   <CounterBlock type={'Time'} data={config.DEFAULT_TIMER - timer} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
                 </CounterBlockGrid>
                 <TestMetaDataContainer>
