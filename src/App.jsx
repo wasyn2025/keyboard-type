@@ -169,6 +169,7 @@ export default function App() {
     restartWpmState();
     restartAccState();
     restartConsistency();
+    Util.classToggle('div#finish-container', 'opacity-100', 'opacity-0');
   }
 
   return (
@@ -201,7 +202,7 @@ export default function App() {
           </div>
 
           {isFinished ? (
-            <div className='select-none mb-8 font-general-sans'>
+            <div id='finish-container' className='fade-in select-none mb-8 font-general-sans'>
               <div className='mx-auto w-fit'>
                 <CounterBlockGrid>
                   <CounterBlock type={'WPM'} data={wpm} />
