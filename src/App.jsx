@@ -89,7 +89,6 @@ export default function App() {
     const isSameLength = newText.length === words[kataAktifIndex].length;
 
     if (isSameLength && isLastWord) {
-      console.log('timer : ' + timer);
       stopTimer();
 
       setTeksHistory((previousTextHistory) => [...previousTextHistory, newText.toLowerCase()]);
@@ -174,11 +173,11 @@ export default function App() {
                   <CounterBlock type={'WPM'} data={wpm} />
                   <CounterBlock type={'Accuracy'} data={67} suffix='%' />
                   <CounterBlock type={'Consistency'} data={87} suffix='%' />
-                  <CounterBlock type={'Time'} data={34} suffix='s' />
+                  <CounterBlock type={'Time'} data={config.DEFAULT_TIMER - timer} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
                 </CounterBlockGrid>
                 <div className='flex items-center justify-between'>
                   <p className='text-(--sub-color) text-base'>{config.DEFAULT_GENERATED_WORDS} words, english</p>
-                  <p className='text-(--sub-color) text-base'>00:00:34</p>
+                  <p className='text-(--sub-color) text-base'>{Util.formatTimer(config.DEFAULT_TIMER - timer, false)}</p>
                 </div>
               </div>
             </div>

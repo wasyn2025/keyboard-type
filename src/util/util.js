@@ -15,19 +15,21 @@ export function getRandomWords(count) {
     return result;
 }
 
-export function formatTimer(totalSeconds) {
+export function formatTimer(totalSeconds, isCleanFormat = true) {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
     const pad = (num) => String(num).padStart(2, '0');
-    let result = '';
+    let result = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 
-    if (hours !== 0) {
-        result = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    } else if (minutes !== 0) {
-        result = `${pad(minutes)}:${pad(seconds)}`
-    } else {
-        result = `${seconds}`
+    if (isCleanFormat === true) {
+        if (hours !== 0) {
+            result = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        } else if (minutes !== 0) {
+            result = `${pad(minutes)}:${pad(seconds)}`
+        } else {
+            result = `${seconds}`
+        }
     }
 
     return result;
@@ -38,4 +40,18 @@ export function limitTyping(typedWords, kataAktifIndex, containerRef) {
     const currentWordLength = currentWord.querySelectorAll('span').length;
 
     return typedWords.length > currentWordLength ? true : false;
+}
+
+export function handleElapsedTimeSuffix(elapsedTime) {
+    let suffix = '';
+
+    if (elapsedTime < 60) {
+        suffix = 's';
+    } else if (elapsedTime >= 60) {
+        suffix = 'm';
+    } else if (elapsedTime >= 3600) {
+        suffix = 'h';
+    }
+
+    return suffix;
 }
