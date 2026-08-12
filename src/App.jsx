@@ -12,6 +12,8 @@ import CounterBlockGrid from './components/CounterBlockGrid.jsx';
 import TestMetaData from './components/TestMetaData.jsx';
 import TestMetaDataContainer from './components/TestMetaDataContainer.jsx';
 import Timer from './components/Timer.jsx';
+import HiddenInputBox from './components/HiddenInputBox.jsx';
+
 import { useTimer } from './hooks/useTimer.js';
 import { useCaretFeature } from './hooks/useCaretFeature.js';
 import { useNewLineFeature } from './hooks/useNewLineFeature.js';
@@ -155,13 +157,11 @@ export default function App() {
   return (
     <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => inputBoxRef.current.focus()}>
 
-      <input
+      <HiddenInputBox
         ref={inputBoxRef}
-        type='text'
         value={teks}
         onChange={(event) => handleTyping(event)}
         onKeyDown={handleSpace}
-        className='absolute opacity-0 pointer-evens-none'
       />
 
       <div className='flex items-center font-general-sans justify-between'>
