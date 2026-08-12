@@ -82,8 +82,6 @@ export default function App() {
       setIsFinished(true);
       setIsFocus(false);
       setIsPaused(false);
-
-      console.log('Current: ' + teksHistory);
     }
   }
 
