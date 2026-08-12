@@ -9,6 +9,9 @@ import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
 import CounterBlock from './components/CounterBlock.jsx';
 import CounterBlockGrid from './components/CounterBlockGrid.jsx';
+import TestMetaData from './components/TestMetaData.jsx';
+import TestMetaDataContainer from './components/TestMetaDataContainer.jsx';
+import Timer from './components/Timer.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useCaretFeature } from './hooks/useCaretFeature.js';
 import { useNewLineFeature } from './hooks/useNewLineFeature.js';
@@ -163,7 +166,9 @@ export default function App() {
       <div className='grow'>
         <div className='w-full'>
           <div className='w-full relative'>
-            <p id='timer' className={`${isFocus ? 'visible' : 'invisible'} transition-opacity relative bottom-6 duration-500 text-4xl font-general-sans text-(--main-color)`}>{Util.formatTimer(timer)}</p>
+            <Timer
+              timer={Util.formatTimer(timer)}
+              extraClass={`${isFocus ? 'visible' : 'invisible'}`} />
           </div>
 
           {isFinished ? (
@@ -175,10 +180,10 @@ export default function App() {
                   <CounterBlock type={'Consistency'} data={87} suffix='%' />
                   <CounterBlock type={'Time'} data={config.DEFAULT_TIMER - timer} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
                 </CounterBlockGrid>
-                <div className='flex items-center justify-between'>
-                  <p className='text-(--sub-color) text-base'>{config.DEFAULT_GENERATED_WORDS} words, english</p>
-                  <p className='text-(--sub-color) text-base'>{Util.formatTimer(config.DEFAULT_TIMER - timer, false)}</p>
-                </div>
+                <TestMetaDataContainer>
+                  <TestMetaData text={`${config.DEFAULT_GENERATED_WORDS} words, english`} />
+                  <TestMetaData text={Util.formatTimer(config.DEFAULT_TIMER - timer, false)} />
+                </TestMetaDataContainer>
               </div>
             </div>
           ) : (
