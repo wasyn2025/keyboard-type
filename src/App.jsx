@@ -169,7 +169,6 @@ export default function App() {
     restartWpmState();
     restartAccState();
     restartConsistency();
-    Util.classToggle('div#finish-container', 'opacity-100', 'opacity-0');
   }
 
   return (

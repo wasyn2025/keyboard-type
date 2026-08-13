@@ -45,9 +45,9 @@ export function limitTyping(typedWords, kataAktifIndex, containerRef) {
 export function handleElapsedTimeSuffix(elapsedTime) {
     let suffix = '';
 
-    if (elapsedTime < 60) {
+    if (elapsedTime <= 60) {
         suffix = 's';
-    } else if (elapsedTime >= 60) {
+    } else if (elapsedTime > 60) {
         suffix = 'm';
     } else if (elapsedTime >= 3600) {
         suffix = 'h';
