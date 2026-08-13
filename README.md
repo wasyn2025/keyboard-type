@@ -4,6 +4,7 @@
 
 A [monkeytype](https://monkeytype.com) clone website client for testing your typing speed, consistency, and accuracy with minimalist and easy to use interface.
 
+
 ## Features
 
 - 60-second timer for testing typing speed
@@ -18,6 +19,33 @@ A [monkeytype](https://monkeytype.com) clone website client for testing your typ
 **Client:** React, TailwindCSS
 
 **Package:** NPM
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/wasyn2025/keyboard-type.git
+```
+
+Go to the project directory
+
+```bash
+  cd keyboard-type
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
+```
 
 
 ## License
