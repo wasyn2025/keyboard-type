@@ -66,6 +66,4 @@ export function handleElapsedTimeSuffix(elapsedTime) {
     }
 
     return 's';
-
-    return suffix;
 }

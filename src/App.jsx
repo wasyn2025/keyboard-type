@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Earth, AlarmClock, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
+import { Earth, Clock, RotateCcw, Keyboard, SettingsIcon, Play, Pause, Palette, CaseSensitive } from 'lucide-react';
 import { generate, count } from "random-words";
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
@@ -33,6 +33,7 @@ export default function App() {
     isFocus, setIsFocus,
     isFinished, setIsFinished,
     isPaused, setIsPaused,
+    typingMode, setTypingMode,
     inputBoxRef,
 
     handleSpace,
@@ -172,7 +173,7 @@ export default function App() {
   }
 
   return (
-    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-40' onClick={() => inputBoxRef.current.focus()}>
+    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-25' onClick={() => inputBoxRef.current.focus()}>
 
       <HiddenInputBox
         ref={inputBoxRef}
@@ -181,15 +182,50 @@ export default function App() {
         onKeyDown={handleSpace}
       />
 
-      <div className='flex items-center font-general-sans justify-between'>
-        <div className='w-full flex items-center text-shade-white gap-2'>
-          <Keyboard size={34} className='text-(--main-color)' />
-          <h1 className='text-3xl font-medium'>keyboardtype</h1>
+      <div className=''>
+        <div className='mb-4 flex items-center font-general-sans justify-between'>
+          <div className='w-full flex items-center text-shade-white gap-2'>
+            <Keyboard size={34} className='text-(--main-color)' />
+            <h1 className='text-3xl font-medium'>keyboardtype</h1>
+          </div>
+          <span id='theme' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+            <Palette size={16} />
+            Gruvbox Dark
+          </span>
+          <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+            <Earth size={16} />
+            English
+          </span>
         </div>
-        <span id='language' className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
-          <Earth size={16} />
-          English
-        </span>
+        <div id='tool-menu' className='flex items-center justify-center gap-3 text-(--sub-color) text-xs'>
+          <div className='w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md'>
+            <button className={`${typingMode === config.TYPING_MODE.time ? 'text-(--text-color)' : 'hover:text-(--text-color) cursor-pointer'} transition-colors duration-300 w-fit flex items-center gap-2`}>
+              <Clock size={16} />
+              <span>Time</span>
+            </button>
+            <button className={`${typingMode === config.TYPING_MODE.words ? 'text-(--text-color)' : 'hover:text-(--text-color) cursor-pointer'} transition-colors duration-300 w-fit flex items-center gap-2`}>
+              <CaseSensitive size={16} />
+              <span>Words</span>
+            </button>
+          </div>
+          {
+            typingMode === config.TYPING_MODE.time ? (
+              <div id='test-duration' className='w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md'>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>15</button>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>30</button>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>60</button>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>120</button>
+              </div>
+            ) : (
+              <div id='word-amount' className='w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md'>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>10</button>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>25</button>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>50</button>
+                <button className='cursor-pointer transition-colors hover:text-(--text-color) duration-300'>100</button>
+              </div>
+            )
+          }
+        </div>
       </div>
 
       <div className='grow'>
@@ -197,7 +233,9 @@ export default function App() {
           <div className='w-full relative'>
             <Timer
               timer={Util.formatTimer(timer)}
-              extraClass={`${isFocus ? 'visible' : 'invisible'}`} />
+              extraClass={`${isFocus ? 'visible' : 'invisible'}`}
+            // extraClass='visible'
+            />
           </div>
 
           {isFinished ? (
