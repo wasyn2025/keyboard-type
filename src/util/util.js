@@ -42,6 +42,18 @@ export function limitTyping(typedWords, kataAktifIndex, containerRef) {
     return typedWords.length > currentWordLength ? true : false;
 }
 
+export function convertElapsedTime(elapsedTime) {
+    if (elapsedTime >= 3600) {
+        return Math.floor(elapsedTime / 3600);
+    }
+
+    if (elapsedTime >= 60) {
+        return Math.floor(elapsedTime / 60);
+    }
+
+    return elapsedTime;
+}
+
 export function handleElapsedTimeSuffix(elapsedTime) {
     let suffix = '';
 
@@ -56,16 +68,4 @@ export function handleElapsedTimeSuffix(elapsedTime) {
     return 's';
 
     return suffix;
-}
-
-export function convertElapsedTime(elapsedTime) {
-    if (elapsedTime >= 3600) {
-        return Math.floor(elapsedTime / 3600);
-    }
-
-    if (elapsedTime >= 60) {
-        return Math.floor(elapsedTime / 60);
-    }
-
-    return elapsedTime;
 }
