@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-export function useConsistency(timer, initialTime, isFocus, isFinished, correctKeyStrokes) {
+export default function useConsistency(timer, initialTime, isFocus, isFinished, correctKeyStrokes) {
     const [consistency, setConsistency] = useState(0);
     const wpmSampleRef = useRef([]);
 

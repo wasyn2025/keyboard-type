@@ -16,13 +16,13 @@ import TestMetaDataContainer from './components/TestMetaDataContainer.jsx';
 import Timer from './components/Timer.jsx';
 import HiddenInputBox from './components/HiddenInputBox.jsx';
 
-import { useTimer } from './hooks/useTimer.js';
-import { useCaretFeature } from './hooks/useCaretFeature.js';
-import { useNewLineFeature } from './hooks/useNewLineFeature.js';
-import { useTypingState } from './hooks/useTypingState.js';
-import { useWpmCalculation } from './hooks/useWpmCalculation.js';
-import { useAccCalculation } from './hooks/useAccCalculation.js';
-import { useConsistency } from './hooks/useConsistency.js';
+import useTimer from './hooks/useTimer.js';
+import useCaretFeature from './hooks/useCaretFeature.js';
+import useNewLineFeature from './hooks/useNewLineFeature.js';
+import useTypingState from './hooks/useTypingState.js';
+import useWpmCalculation from './hooks/useWpmCalculation.js';
+import useAccCalculation from './hooks/useAccCalculation.js';
+import useConsistency from './hooks/useConsistency.js';
 
 export default function App() {
   const {

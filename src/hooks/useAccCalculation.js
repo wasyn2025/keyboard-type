@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useAccCalculation() {
+export default function useAccCalculation() {
     const [acc, setAcc] = useState(0);
     const [totalKeyStrokes, setTotalKeyStrokes] = useState(0);
     const [correctKeyStrokes, setCorrectKeyStrokes] = useState(0);

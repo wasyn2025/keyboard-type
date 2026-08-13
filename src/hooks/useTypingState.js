@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { generate, count } from "random-words";
 import * as config from '../util/config.js';
 
-export function useTypingState() {
+export default function useTypingState() {
     const [words, setWords] = useState(() => generate(config.DEFAULT_GENERATED_WORDS));
     const [teks, setTeks] = useState('');
     const [kataAktifIndex, setKataAktifIndex] = useState(0);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useWpmCalculation(teksHistory, words) {
+export default function useWpmCalculation(teksHistory, words) {
     const [wpm, setWpm] = useState(0);
 
     function calculateCorrectChars(teksHistory, words) {
