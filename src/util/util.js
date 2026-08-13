@@ -45,13 +45,27 @@ export function limitTyping(typedWords, kataAktifIndex, containerRef) {
 export function handleElapsedTimeSuffix(elapsedTime) {
     let suffix = '';
 
-    if (elapsedTime <= 60) {
-        suffix = 's';
-    } else if (elapsedTime > 60) {
-        suffix = 'm';
-    } else if (elapsedTime >= 3600) {
-        suffix = 'h';
+    if(elapsedTime >= 3600) {
+        return 'h';
     }
 
+    if(elapsedTime >= 60) {
+        return 'm';
+    }
+
+    return 's';
+
     return suffix;
+}
+
+export function convertElapsedTime(elapsedTime) {
+    if (elapsedTime >= 3600) {
+        return Math.floor(elapsedTime / 3600);
+    }
+
+    if (elapsedTime >= 60) {
+        return Math.floor(elapsedTime / 60);
+    }
+
+    return elapsedTime;
 }

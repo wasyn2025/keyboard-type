@@ -201,13 +201,13 @@ export default function App() {
           </div>
 
           {isFinished ? (
-            <div id='finish-container' className='fade-in select-none mb-8 font-general-sans'>
+            <div id='finish-container' className='select-none mb-8 font-general-sans'>
               <div className='mx-auto w-fit'>
                 <CounterBlockGrid>
                   <CounterBlock type={'WPM'} data={wpm} />
                   <CounterBlock type={'Accuracy'} data={acc} suffix='%' />
                   <CounterBlock type={'Consistency'} data={consistency} suffix='%' />
-                  <CounterBlock type={'Time'} data={config.DEFAULT_TIMER - timer} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
+                  <CounterBlock type={'Time'} data={Util.convertElapsedTime(config.DEFAULT_TIMER - timer)} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
                 </CounterBlockGrid>
                 <TestMetaDataContainer>
                   <TestMetaData text={`${config.DEFAULT_GENERATED_WORDS} words, english`} />
