@@ -24,9 +24,18 @@ import useTypingState from './hooks/useTypingState.js';
 import useWpmCalculation from './hooks/useWpmCalculation.js';
 import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
-import useTestSetting from './hooks/useTestSetting.js';
+import useTypingSetting from './hooks/useTypingSetting.js';
+import TypingModeButton from './components/TypingModeButton.jsx';
 
 export default function App() {
+  const {
+    typingMode,
+    testDuration, setTestDuration,
+    testWordAmount,
+    setTimeMode,
+    setWordMode
+  } = useTypingSetting();
+
   const {
     words, setWords,
     teks, setTeks,
@@ -35,8 +44,6 @@ export default function App() {
     isFocus, setIsFocus,
     isFinished, setIsFinished,
     isPaused, setIsPaused,
-    typingMode, setTypingMode,
-    testDuration, setTestDuration,
     inputBoxRef,
 
     handleSpace,
@@ -73,7 +80,7 @@ export default function App() {
     handleTimerOver,
     restartTimerState
   } = useTimer(
-    config.DEFAULT_TIMER,
+    testDuration,
     isFocus,
     isPaused,
     () => {
@@ -202,29 +209,31 @@ export default function App() {
         </div>
         <div id='tool-menu' className='flex items-center justify-center gap-3 text-(--sub-color) text-xs'>
           <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
-            <button className={`${typingMode === config.TYPING_MODE.time ? 'text-(--text-color)' : 'hover:text-(--text-color) cursor-pointer'} transition-colors duration-300 w-fit flex items-center gap-2`}>
+            <TypingModeButton onClick={() => setTimeMode()} extraClass={typingMode === config.TYPING_MODE.time ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'}>
               <Clock size={16} />
               <span>Time</span>
-            </button>
-            <button className={`${typingMode === config.TYPING_MODE.words ? 'text-(--text-color)' : 'hover:text-(--text-color) cursor-pointer'} transition-colors duration-300 w-fit flex items-center gap-2`}>
+            </TypingModeButton>
+            <TypingModeButton onClick={() => setWordMode()} extraClass={typingMode === config.TYPING_MODE.words ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'}>
               <CaseSensitive size={16} />
               <span>Words</span>
-            </button>
+            </TypingModeButton>
           </TestSettingContainer>
           {
             typingMode === config.TYPING_MODE.time ? (
               <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
                 {
                   config.TEST_DURATION.map((time, index) => {
-                    return <button key={index} className={`${testDuration === time ? 'text-(--text-color)' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}>{time}</button>;
+                    return <button 
+                    onClick={() => {setTestDuration(time); setTimer(time)}} 
+                    key={index} className={`${testDuration === time ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}>{time}</button>;
                   })
                 }
               </TestSettingContainer>
             ) : (
               <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
                 {
-                  config.WORDS_AMOUNT.map((word, index) => {
-                    return <button key={index} className={`${testDuration === word ? 'text-(--text-color)' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}>{word}</button>;
+                  config.WORDS_AMOUNT.map((amount, index) => {
+                    return <button key={index} className={`${testWordAmount === amount ? 'text-(--text-color)' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}>{amount}</button>;
                   })
                 }
               </TestSettingContainer>
