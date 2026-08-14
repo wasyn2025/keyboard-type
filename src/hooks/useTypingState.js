@@ -11,6 +11,7 @@ export default function useTypingState() {
     const [isFinished, setIsFinished] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [typingMode, setTypingMode] = useState(config.TYPING_MODE.time);
+    const [testDuration, setTestDuration] = useState(config.TEST_DURATION[2])
     const inputBoxRef = useRef(null);
 
     useEffect(() => inputBoxRef.current.focus(), []);
@@ -50,6 +51,7 @@ export default function useTypingState() {
         isFinished, setIsFinished,
         isPaused, setIsPaused,
         typingMode, setTypingMode,
+        testDuration, setTestDuration,
         inputBoxRef,
 
         handlePause,
