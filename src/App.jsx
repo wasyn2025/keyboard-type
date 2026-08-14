@@ -209,11 +209,23 @@ export default function App() {
         </div>
         <div id='tool-menu' className='flex items-center justify-center gap-3 text-(--sub-color) text-xs'>
           <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
-            <TypingModeButton onClick={() => setTimeMode()} extraClass={typingMode === config.TYPING_MODE.time ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'}>
+            <TypingModeButton
+              onClick={() => setTimeMode()}
+              className={
+                `${typingMode === config.TYPING_MODE.time ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 
+                'transition-colors duration-300 w-fit flex items-center gap-2`
+              }
+            >
               <Clock size={16} />
               <span>Time</span>
             </TypingModeButton>
-            <TypingModeButton onClick={() => setWordMode()} extraClass={typingMode === config.TYPING_MODE.words ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'}>
+            <TypingModeButton
+              onClick={() => setWordMode()}
+              className={
+                `${typingMode === config.TYPING_MODE.words ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 
+                'transition-colors duration-300 w-fit flex items-center gap-2`
+              }
+            >
               <CaseSensitive size={16} />
               <span>Words</span>
             </TypingModeButton>
@@ -223,9 +235,16 @@ export default function App() {
               <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
                 {
                   config.TEST_DURATION.map((time, index) => {
-                    return <button 
-                    onClick={() => {setTestDuration(time); setTimer(time)}} 
-                    key={index} className={`${testDuration === time ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}>{time}</button>;
+                    return <TypingModeButton
+                      key={index}
+                      onClick={() => { setTestDuration(time); setTimer(time) }}
+                      className={`
+                        ${testDuration === time ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} 
+                        transition-colors duration-300`
+                      }
+                    >
+                      {time}
+                    </TypingModeButton>
                   })
                 }
               </TestSettingContainer>
@@ -233,7 +252,16 @@ export default function App() {
               <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
                 {
                   config.WORDS_AMOUNT.map((amount, index) => {
-                    return <button key={index} className={`${testWordAmount === amount ? 'text-(--text-color)' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}>{amount}</button>;
+                    return <TypingModeButton
+                      key={index}
+                      onClick={() => { console.log('Hello World') }}
+                      className={`
+                        ${testWordAmount === amount ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} 
+                        transition-colors duration-300`
+                      }
+                    >
+                      {amount}
+                    </TypingModeButton>
                   })
                 }
               </TestSettingContainer>
@@ -248,7 +276,6 @@ export default function App() {
             <Timer
               timer={Util.formatTimer(timer)}
               extraClass={`${isFocus ? 'visible' : 'invisible'}`}
-            // extraClass='visible'
             />
           </div>
 
