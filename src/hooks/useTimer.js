@@ -19,9 +19,7 @@ export default function useTimer(initialTime, isFocus, isPaused, handleRestart,)
         if (timer <= 0 && isFocus === true) {
             stopTimer();
 
-            setTimeout(() => {
-                handleRestart();
-            }, 600);
+            setTimeout(() => handleRestart(), 600);
         }
     }
 

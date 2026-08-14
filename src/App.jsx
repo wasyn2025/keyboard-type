@@ -15,7 +15,6 @@ import TestMetaData from './components/TestMetaData.jsx';
 import TestMetaDataContainer from './components/TestMetaDataContainer.jsx';
 import Timer from './components/Timer.jsx';
 import HiddenInputBox from './components/HiddenInputBox.jsx';
-import TestSettingContainer from './components/TestSettingContainer.jsx';
 
 import useTimer from './hooks/useTimer.js';
 import useCaretFeature from './hooks/useCaretFeature.js';
@@ -25,7 +24,7 @@ import useWpmCalculation from './hooks/useWpmCalculation.js';
 import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
-import TypingModeButton from './components/TypingModeButton.jsx';
+import TestSettingWrapper from './components/TestSettingWrapper.jsx';
 
 export default function App() {
   const {
@@ -207,67 +206,20 @@ export default function App() {
             English
           </span>
         </div>
-        <div id='tool-menu' className='flex items-center justify-center gap-3 text-(--sub-color) text-xs'>
-          <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
-            <TypingModeButton
-              onClick={() => setTimeMode()}
-              className={
-                `${typingMode === config.TYPING_MODE.time ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 
-                'transition-colors duration-300 w-fit flex items-center gap-2`
-              }
-            >
-              <Clock size={16} />
-              <span>Time</span>
-            </TypingModeButton>
-            <TypingModeButton
-              onClick={() => setWordMode()}
-              className={
-                `${typingMode === config.TYPING_MODE.words ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 
-                'transition-colors duration-300 w-fit flex items-center gap-2`
-              }
-            >
-              <CaseSensitive size={16} />
-              <span>Words</span>
-            </TypingModeButton>
-          </TestSettingContainer>
-          {
-            typingMode === config.TYPING_MODE.time ? (
-              <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
-                {
-                  config.TEST_DURATION.map((time, index) => {
-                    return <TypingModeButton
-                      key={index}
-                      onClick={() => { setTestDuration(time); setTimer(time) }}
-                      className={`
-                        ${testDuration === time ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} 
-                        transition-colors duration-300`
-                      }
-                    >
-                      {time}
-                    </TypingModeButton>
-                  })
-                }
-              </TestSettingContainer>
-            ) : (
-              <TestSettingContainer className={`${isFocus ? 'invisible' : 'visible'} transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
-                {
-                  config.WORDS_AMOUNT.map((amount, index) => {
-                    return <TypingModeButton
-                      key={index}
-                      onClick={() => { console.log('Hello World') }}
-                      className={`
-                        ${testWordAmount === amount ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} 
-                        transition-colors duration-300`
-                      }
-                    >
-                      {amount}
-                    </TypingModeButton>
-                  })
-                }
-              </TestSettingContainer>
-            )
-          }
-        </div>
+        <TestSettingWrapper data={{
+          isFocus: isFocus,
+          isFinished: isFinished,
+          typingMode: typingMode,
+          typingModeList: config.TYPING_MODE,
+          testDurationList: config.TEST_DURATION,
+          wordsAmountList: config.WORDS_AMOUNT,
+          testDuration: testDuration,
+          testWordAmount: testWordAmount,
+          setTimeMode: setTimeMode,
+          setWordMode: setWordMode,
+          setTestDuration: setTestDuration,
+          setTimer: setTimer,
+        }} />
       </div>
 
       <div className='grow'>
