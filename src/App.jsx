@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Earth, Clock, RotateCcw, Keyboard, SettingsIcon, Play, Pause, Palette, CaseSensitive } from 'lucide-react';
+import { Earth, RotateCcw, Keyboard, SettingsIcon, Play, Pause, Palette } from 'lucide-react';
 import { generate, count } from "random-words";
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
@@ -9,10 +9,6 @@ import * as config from './util/config.js';
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
-import CounterBlock from './components/CounterBlock.jsx';
-import CounterBlockGrid from './components/CounterBlockGrid.jsx';
-import TestMetaData from './components/TestMetaData.jsx';
-import TestMetaDataContainer from './components/TestMetaDataContainer.jsx';
 import Timer from './components/Timer.jsx';
 import HiddenInputBox from './components/HiddenInputBox.jsx';
 
@@ -25,6 +21,7 @@ import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
 import TestSettingWrapper from './components/TestSettingWrapper.jsx';
+import FinishInterfaceWrapper from './components/FinishInterfaceWrapper.jsx';
 
 export default function App() {
   const {
@@ -232,20 +229,17 @@ export default function App() {
           </div>
 
           {isFinished ? (
-            <div id='finish-container' className='select-none mb-8 font-general-sans'>
-              <div className='mx-auto w-fit'>
-                <CounterBlockGrid>
-                  <CounterBlock type={'WPM'} data={wpm} />
-                  <CounterBlock type={'Accuracy'} data={acc} suffix='%' />
-                  <CounterBlock type={'Consistency'} data={consistency} suffix='%' />
-                  <CounterBlock type={'Time'} data={Util.convertElapsedTime(config.DEFAULT_TIMER - timer)} suffix={Util.handleElapsedTimeSuffix(config.DEFAULT_TIMER - timer)} />
-                </CounterBlockGrid>
-                <TestMetaDataContainer>
-                  <TestMetaData text={`${config.DEFAULT_GENERATED_WORDS} words, english`} />
-                  <TestMetaData text={Util.formatTimer(config.DEFAULT_TIMER - timer, false)} />
-                </TestMetaDataContainer>
-              </div>
-            </div>
+            <FinishInterfaceWrapper data={{
+              wpm: wpm,
+              acc: acc,
+              accSuffix: '%',
+              consistency: consistency,
+              consistencySuffix: '%',
+              time: Util.convertElapsedTime(testDuration - timer),
+              timeSuffix: Util.handleElapsedTimeSuffix(testDuration - timer),
+              testWordAmount: `${testWordAmount} words, english`,
+              elapsedTime: Util.formatTimer(testDuration - timer, false)
+            }} />
           ) : (
             <div className='relative mb-8 h-38 overflow-hidden'>
               <div
