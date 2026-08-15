@@ -6,28 +6,15 @@ export default function useTypingSetting() {
     const [testDuration, setTestDuration] = useState(config.TEST_DURATION[2]);
     const [testWordAmount, setTestWordAmount] = useState(config.WORDS_AMOUNT[3])
 
-    function setTimeMode() {
-        setTypingMode(config.TYPING_MODE.time);
-        setTestDuration(config.TEST_DURATION[2]);
-        setTestWordAmount(config.WORDS_AMOUNT[3]);
-    }
-
-    function setWordMode() {
-        setTypingMode(config.TYPING_MODE.words);
-        setTestWordAmount(config.WORDS_AMOUNT[2]);
-    }
-
-    function restartTypingState() {
+    function restartTypingSetting() {
         setTypingMode(config.TYPING_MODE.time);
         setTestDuration(config.TEST_DURATION[2]);
         setTestWordAmount(config.TYPING_MODE[4]);
     }
 
     return {
-        typingMode,
+        typingMode, setTypingMode,
         testDuration, setTestDuration,
         testWordAmount,setTestWordAmount,
-        setTimeMode,
-        setWordMode
     };
 }

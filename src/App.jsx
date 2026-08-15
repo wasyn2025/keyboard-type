@@ -25,11 +25,9 @@ import useTypingSetting from './hooks/useTypingSetting.js';
 
 export default function App() {
   const {
-    typingMode,
+    typingMode, setTypingMode,
     testDuration, setTestDuration,
     testWordAmount, setTestWordAmount,
-    setTimeMode,
-    setWordMode
   } = useTypingSetting();
 
   const {
@@ -45,7 +43,7 @@ export default function App() {
     handleSpace,
     handlePause,
     restartTypingState
-  } = useTypingState();
+  } = useTypingState(testWordAmount);
 
   const {
     caretPosition,
@@ -176,6 +174,12 @@ export default function App() {
     restartWpmState();
     restartAccState();
     restartConsistency();
+    
+    setWords(generate(
+      typingMode === config.TYPING_MODE.time ? 
+      config.WORDS_AMOUNT[3] :
+      testWordAmount
+    ));
   }
 
   return (
@@ -206,17 +210,17 @@ export default function App() {
         <TestSettingWrapper data={{
           isFocus: isFocus,
           isFinished: isFinished,
-          typingMode: typingMode,
           typingModeList: config.TYPING_MODE,
           testDurationList: config.TEST_DURATION,
           wordsAmountList: config.WORDS_AMOUNT,
+          typingMode: typingMode,
           testDuration: testDuration,
           testWordAmount: testWordAmount,
-          setTestWordAmount: setTestWordAmount,
-          setTimeMode: setTimeMode,
-          setWordMode: setWordMode,
+          setTypingMode: setTypingMode,
           setTestDuration: setTestDuration,
+          setTestWordAmount: setTestWordAmount,
           setTimer: setTimer,
+          setWords: setWords,
         }} />
       </div>
 
