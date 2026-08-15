@@ -22,12 +22,14 @@ import useWpmCalculation from './hooks/useWpmCalculation.js';
 import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
+import WordLeft from './components/WordLeft.jsx';
 
 export default function App() {
   const {
     typingMode, setTypingMode,
     testDuration, setTestDuration,
     testWordAmount, setTestWordAmount,
+    currentWord, setCurrentWord, incrementCurrentWord
   } = useTypingSetting();
 
   const {
@@ -43,7 +45,7 @@ export default function App() {
     handleSpace,
     handlePause,
     restartTypingState
-  } = useTypingState(testWordAmount);
+  } = useTypingState(testWordAmount, incrementCurrentWord);
 
   const {
     caretPosition,
@@ -137,6 +139,7 @@ export default function App() {
       setIsFinished(true);
       setIsFocus(false);
       setIsPaused(false);
+      incrementCurrentWord();
     }
   }
 
@@ -174,12 +177,14 @@ export default function App() {
     restartWpmState();
     restartAccState();
     restartConsistency();
-    
+
     setWords(generate(
-      typingMode === config.TYPING_MODE.time ? 
-      config.WORDS_AMOUNT[3] :
-      testWordAmount
+      typingMode === config.TYPING_MODE.time ?
+        config.WORDS_AMOUNT[3] :
+        testWordAmount
     ));
+
+    setCurrentWord(0);
   }
 
   return (
@@ -227,10 +232,21 @@ export default function App() {
       <div className='grow'>
         <div className='w-full'>
           <div className='w-full relative'>
-            <Timer
-              timer={Util.formatTimer(timer)}
-              extraClass={`${isFocus ? 'visible' : 'invisible'}`}
-            />
+            {
+              typingMode === config.TYPING_MODE.words ?
+                (
+                  <WordLeft data={{
+                    testWordAmount: testWordAmount,
+                    currentWord: currentWord,
+                    extraClass: isFocus ? 'visible' : 'invisible'
+                  }} />
+                ) : (
+                  <Timer
+                    timer={Util.formatTimer(timer)}
+                    extraClass={`${isFocus ? 'visible' : 'invisible'}`}
+                  />
+                )
+            }
           </div>
 
           {isFinished ? (
@@ -243,7 +259,9 @@ export default function App() {
               time: Util.convertElapsedTime(testDuration - timer),
               timeSuffix: Util.handleElapsedTimeSuffix(testDuration - timer),
               testWordAmount: `${testWordAmount} words, english`,
-              elapsedTime: Util.formatTimer(testDuration - timer, false)
+              elapsedTime: Util.formatTimer(testDuration - timer, false),
+              typingMode: typingMode,
+              typingModeWord: config.TYPING_MODE.words,
             }} />
           ) : (
             <div className='relative mb-8 h-38 overflow-hidden'>

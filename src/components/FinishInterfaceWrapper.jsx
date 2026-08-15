@@ -4,6 +4,12 @@ import TestMetaData from './TestMetaData.jsx';
 import TestMetaDataContainer from './TestMetaDataContainer.jsx';
 
 export default function FinishInterfaceWrapper({ data }) {
+    if(data.typingMode === data.typingModeWord) {
+        data.time = 0;
+        data.timeSuffix = 's';
+        data.elapsedTime = '00:00:00';
+    }
+
     return (
         <div id='finish-container' className='select-none mb-8 font-general-sans'>
             <div className='mx-auto w-fit'>
