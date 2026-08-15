@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Earth, RotateCcw, Keyboard, SettingsIcon, Play, Pause, Palette } from 'lucide-react';
+import { Earth, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
 import { generate, count } from "random-words";
 import * as Util from './util/util.js';
 import * as config from './util/config.js';
@@ -23,8 +23,13 @@ import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
 import WordLeft from './components/WordLeft.jsx';
+import ThemeSwitcher from './components/ThemeSwitcher.jsx';
 
 export default function App() {
+  const [activeTheme, setActiveTheme] = useState('mountain');
+
+  useEffect(() => document.body.setAttribute('data-theme', activeTheme), [activeTheme]);
+
   const {
     typingMode, setTypingMode,
     testDuration, setTestDuration,
@@ -207,11 +212,8 @@ export default function App() {
             <Keyboard size={34} className='text-(--main-color)' />
             <h1 className='text-3xl font-medium'>keyboardtype</h1>
           </div>
-          <span id='theme' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
-            <Palette size={16} />
-            Gruvbox Dark
-          </span>
-          <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-sm cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+          <ThemeSwitcher isFocus={isFocus} activeTheme={activeTheme} setActiveTheme={setActiveTheme}/>
+          <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-xs cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
             <Earth size={16} />
             English
           </span>
