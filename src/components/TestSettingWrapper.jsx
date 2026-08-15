@@ -20,8 +20,9 @@ export default function TestSettingWrapper({ data }) {
         data.setTimer(time)
     }
 
-    function handleSetWordAmount(word) {
+    function handleSetWordAmount(amount) {
         if (data.isFocus || data.isFinished) return;
+        data.setTestWordAmount(amount);
     }
 
     return (
@@ -59,7 +60,7 @@ export default function TestSettingWrapper({ data }) {
                             data.wordsAmountList.map((amount, index) => {
                                 return <TypingModeButton
                                     key={index}
-                                    onClick={() => { console.log('Hello World') }}
+                                    onClick={() => handleSetWordAmount(amount)}
                                     className={`${data.testWordAmount === amount ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}
                                 >{amount}</TypingModeButton>
                             })

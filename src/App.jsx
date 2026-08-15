@@ -11,6 +11,8 @@ import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
 import Timer from './components/Timer.jsx';
 import HiddenInputBox from './components/HiddenInputBox.jsx';
+import TestSettingWrapper from './components/TestSettingWrapper.jsx';
+import FinishInterfaceWrapper from './components/FinishInterfaceWrapper.jsx';
 
 import useTimer from './hooks/useTimer.js';
 import useCaretFeature from './hooks/useCaretFeature.js';
@@ -20,14 +22,12 @@ import useWpmCalculation from './hooks/useWpmCalculation.js';
 import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
-import TestSettingWrapper from './components/TestSettingWrapper.jsx';
-import FinishInterfaceWrapper from './components/FinishInterfaceWrapper.jsx';
 
 export default function App() {
   const {
     typingMode,
     testDuration, setTestDuration,
-    testWordAmount,
+    testWordAmount, setTestWordAmount,
     setTimeMode,
     setWordMode
   } = useTypingSetting();
@@ -212,6 +212,7 @@ export default function App() {
           wordsAmountList: config.WORDS_AMOUNT,
           testDuration: testDuration,
           testWordAmount: testWordAmount,
+          setTestWordAmount: setTestWordAmount,
           setTimeMode: setTimeMode,
           setWordMode: setWordMode,
           setTestDuration: setTestDuration,

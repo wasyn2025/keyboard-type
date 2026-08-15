@@ -26,7 +26,7 @@ export default function useTypingSetting() {
     return {
         typingMode,
         testDuration, setTestDuration,
-        testWordAmount,
+        testWordAmount,setTestWordAmount,
         setTimeMode,
         setWordMode
     };

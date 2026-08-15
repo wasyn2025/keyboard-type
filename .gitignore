@@ -26,3 +26,4 @@ dist-ssr
 /src/test
 /docs
 bug
+/logic
