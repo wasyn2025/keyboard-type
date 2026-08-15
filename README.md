@@ -4,6 +4,12 @@
 
 A [monkeytype](https://monkeytype.com) clone website client for testing your typing speed, consistency, and accuracy with minimalist and easy to use interface.
 
+[!IMPORTANT]
+Currently, KeyboardType only supports laptop screen sizes ranging from 1280px to 1440px. Running this project outside the specified range may result in:
+- Broken/messy layout
+- Content overflowing off-screen
+- The page appearing overly long
+
 ## 🛠️ Features
 
 - 60-second timer for testing typing speed
