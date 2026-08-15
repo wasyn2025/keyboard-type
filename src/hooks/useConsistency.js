@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 
-export default function useConsistency(timer, initialTime, isFocus, isFinished, correctKeyStrokes) {
+export default function useConsistency(timer, initialTime, isFocus, isFinished, correctKeyStrokes, typingMode, typingModeTime) {
     const [consistency, setConsistency] = useState(0);
     const wpmSampleRef = useRef([]);
 
     useEffect(() => {
         if (!isFocus || isFinished) return;
 
-        const elapsedSeconds = initialTime - timer;
+        const elapsedSeconds = typingMode === typingModeTime ? initialTime - timer : timer;
         if (elapsedSeconds < 0) return;
 
         const elapsedMinutes = elapsedSeconds / 60;

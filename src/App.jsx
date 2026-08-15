@@ -74,7 +74,7 @@ export default function App() {
     timerIntervalIdRef,
     stopTimer,
     handleTimerOver,
-    restartTimerState
+    restartTimerState,
   } = useTimer(
     testDuration,
     isFocus,
@@ -84,7 +84,9 @@ export default function App() {
       setIsFinished(true);
       setIsPaused(false);
       restartCaretState();
-    }
+    },
+    typingMode,
+    config.TYPING_MODE.words
   );
 
   const {
@@ -108,16 +110,18 @@ export default function App() {
     restartConsistency
   } = useConsistency(
     timer,
-    config.DEFAULT_TIMER,
+    testDuration,
     isFocus,
     isFinished,
-    correctKeyStrokes
+    correctKeyStrokes,
+    typingMode,
+    config.TYPING_MODE.time
   );
 
   useEffect(() => {
     if (isFinished === true) {
       const correctChars = calculateCorrectChars(teksHistory, words);
-      const elapsedSeconds = config.DEFAULT_TIMER - timer;
+      const elapsedSeconds = typingMode === config.TYPING_MODE.time ? testDuration - timer : timer;
       const wpmResult = calculateWpm(correctChars, elapsedSeconds);
       const accResult = calculateAcc(correctKeyStrokes, totalKeyStrokes);
 

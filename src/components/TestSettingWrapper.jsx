@@ -21,6 +21,7 @@ export default function TestSettingWrapper({ data }) {
         data.setTypingMode(data.typingModeList.words);
         data.setTestWordAmount(data.wordsAmountList[2]);
         data.setWords(generate(data.wordsAmountList[2]));
+        data.setTimer(0);
     }
 
     function handleSetTestDuration(time) {
