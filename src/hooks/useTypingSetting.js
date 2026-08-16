@@ -17,10 +17,14 @@ export default function useTypingSetting() {
         setCurrentWord((prevIndex) => prevIndex < testWordAmount ? prevIndex + 1 : prevIndex);
     }
 
+    function restartCurrentWord() {
+        setCurrentWord(0);
+    }
+
     return {
         typingMode, setTypingMode,
         testDuration, setTestDuration,
         testWordAmount, setTestWordAmount,
-        currentWord, setCurrentWord, incrementCurrentWord,
+        currentWord, setCurrentWord, incrementCurrentWord, restartCurrentWord
     };
 }

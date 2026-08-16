@@ -1,11 +1,15 @@
+// packages
 import { useState, useRef, useEffect } from 'react'
 import { Earth, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
 import { generate, count } from "random-words";
+
+// miscellanious
 import * as Util from './util/util.js';
-import * as config from './util/config.js';
+import * as Config from './util/config.js';
 
 // Heyyy, i'm you from the past :D
 
+// components
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
@@ -15,29 +19,25 @@ import TestSettingWrapper from './components/TestSettingWrapper.jsx';
 import FinishInterfaceWrapper from './components/FinishInterfaceWrapper.jsx';
 import ThemeSwitcher from './components/ThemeSwitcher.jsx';
 
+// custom hooks
 import useTimer from './hooks/useTimer.js';
 import useCaretFeature from './hooks/useCaretFeature.js';
 import useNewLineFeature from './hooks/useNewLineFeature.js';
 import useTypingState from './hooks/useTypingState.js';
-import useWpmCalculation from './hooks/useWpmCalculation.js';
-import useAccCalculation from './hooks/useAccCalculation.js';
-import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
 import WordLeft from './components/WordLeft.jsx';
 import usePreferences from './hooks/usePreferences.js';
+import useAccCalculation from './hooks/useAccCalculation.js';
+import useConsistency from './hooks/useConsistency.js';
 
 export default function App() {
-  // console.log(localStorage.getItem('preferences'));
-  // console.log(localStorage.clear('preferences'));
-  // return <h1>Hello world</h1>;
-
-  const {preferences, setPreferences} = usePreferences();
+  const { preferences, setPreferences } = usePreferences();
 
   const {
     typingMode, setTypingMode,
     testDuration, setTestDuration,
     testWordAmount, setTestWordAmount,
-    currentWord, setCurrentWord, incrementCurrentWord
+    currentWord, setCurrentWord, incrementCurrentWord, restartCurrentWord
   } = useTypingSetting();
 
   const {
@@ -56,29 +56,19 @@ export default function App() {
   } = useTypingState(testWordAmount, incrementCurrentWord);
 
   const {
-    caretPosition,
-    setCaretPosition,
-    containerRef,
-    restartCaretState
-  } = useCaretFeature(
-    teks,
-    kataAktifIndex
-  );
+    caretPosition, setCaretPosition,
+    containerRef,restartCaretState
+  } = useCaretFeature(teks, kataAktifIndex);
 
   const {
-    offsetGeser,
-    setOffsetGeser,
+    offsetGeser, setOffsetGeser,
     setPosisiBarisPertama,
     setTinggiBaris,
     restartNewLineState
-  } = useNewLineFeature(
-    kataAktifIndex,
-    containerRef
-  );
+  } = useNewLineFeature(kataAktifIndex, containerRef);
 
   const {
-    timer,
-    setTimer,
+    timer, setTimer,
     timerIntervalIdRef,
     stopTimer,
     handleTimerOver,
@@ -94,16 +84,8 @@ export default function App() {
       restartCaretState();
     },
     typingMode,
-    config.TYPING_MODE.words
+    Config.TYPING_MODE.words
   );
-
-  const {
-    wpm,
-    setWpm,
-    calculateCorrectChars,
-    calculateWpm,
-    restartWpmState
-  } = useWpmCalculation(teksHistory, words);
 
   const {
     acc, setAcc,
@@ -114,8 +96,7 @@ export default function App() {
   } = useAccCalculation();
 
   const {
-    consistency,
-    restartConsistency
+    consistency, restartConsistency
   } = useConsistency(
     timer,
     testDuration,
@@ -123,20 +104,8 @@ export default function App() {
     isFinished,
     correctKeyStrokes,
     typingMode,
-    config.TYPING_MODE.time
+    Config.TYPING_MODE.time
   );
-
-  useEffect(() => {
-    if (isFinished === true) {
-      const correctChars = calculateCorrectChars(teksHistory, words);
-      const elapsedSeconds = typingMode === config.TYPING_MODE.time ? testDuration - timer : timer;
-      const wpmResult = calculateWpm(correctChars, elapsedSeconds);
-      const accResult = calculateAcc(correctKeyStrokes, totalKeyStrokes);
-
-      setWpm(wpmResult);
-      setAcc(accResult);
-    }
-  }, [isFinished]);
 
   function checkIsLastWord(newText) {
     const isLastWord = kataAktifIndex === (words.length - 1);
@@ -186,17 +155,10 @@ export default function App() {
     restartTimerState();
     restartCaretState();
     restartNewLineState();
-    restartWpmState();
     restartAccState();
     restartConsistency();
-
-    setWords(generate(
-      typingMode === config.TYPING_MODE.time ?
-        config.WORDS_AMOUNT[3] :
-        testWordAmount
-    ));
-
-    setCurrentWord(0);
+    restartCurrentWord();
+    setWords(generate(typingMode === Config.TYPING_MODE.time ? Config.WORDS_AMOUNT[3] :testWordAmount));
   }
 
   return (
@@ -215,7 +177,7 @@ export default function App() {
             <Keyboard size={34} className='text-(--main-color)' />
             <h1 className='text-3xl font-medium'>keyboardtype</h1>
           </div>
-          <ThemeSwitcher isFocus={isFocus} setPreferences={setPreferences} defaultPreferences={config.DEFAULT_PREFERENCE} />
+          <ThemeSwitcher isFocus={isFocus} setPreferences={setPreferences} defaultPreferences={Config.DEFAULT_PREFERENCE} />
           <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-xs cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
             <Earth size={16} />
             English
@@ -224,9 +186,9 @@ export default function App() {
         <TestSettingWrapper data={{
           isFocus: isFocus,
           isFinished: isFinished,
-          typingModeList: config.TYPING_MODE,
-          testDurationList: config.TEST_DURATION,
-          wordsAmountList: config.WORDS_AMOUNT,
+          typingModeList: Config.TYPING_MODE,
+          testDurationList: Config.TEST_DURATION,
+          wordsAmountList: Config.WORDS_AMOUNT,
           typingMode: typingMode,
           testDuration: testDuration,
           testWordAmount: testWordAmount,
@@ -242,7 +204,7 @@ export default function App() {
         <div className='w-full'>
           <div className='w-full relative'>
             {
-              typingMode === config.TYPING_MODE.words ?
+              typingMode === Config.TYPING_MODE.words ?
                 (
                   <WordLeft data={{
                     testWordAmount: testWordAmount,
@@ -259,19 +221,33 @@ export default function App() {
           </div>
 
           {isFinished ? (
-            <FinishInterfaceWrapper data={{
-              wpm: wpm,
-              acc: acc,
-              accSuffix: '%',
-              consistency: consistency,
-              consistencySuffix: '%',
-              time: Util.convertElapsedTime(testDuration - timer),
-              timeSuffix: Util.handleElapsedTimeSuffix(testDuration - timer),
-              testWordAmount: `${testWordAmount} words, english`,
-              elapsedTime: Util.formatTimer(testDuration - timer, false),
-              typingMode: typingMode,
-              typingModeWord: config.TYPING_MODE.words,
-            }} />
+            <FinishInterfaceWrapper
+              data={{
+                time: Util.convertElapsedTime(testDuration - timer),
+                timeSuffix: Util.handleElapsedTimeSuffix(testDuration - timer),
+                testWordAmount: `${testWordAmount} words, english`,
+                elapsedTime: Util.formatTimer(testDuration - timer, false),
+              }}
+
+              state={{
+                teksHistory: teksHistory,
+                words: words,
+                isFinished: isFinished,
+                timer: timer,
+                testDuration: testDuration,
+                typingMode: typingMode,
+                typingModeList: Config.TYPING_MODE,
+                correctKeyStrokes: correctKeyStrokes,
+                totalKeyStrokes: totalKeyStrokes,
+                acc: acc,
+                consistency: consistency,
+              }}
+
+              setter={{
+                calculateAcc,
+                setAcc
+              }}
+            />
           ) : (
             <div className='relative mb-8 h-38 overflow-hidden'>
               <div
