@@ -13,6 +13,7 @@ import Timer from './components/Timer.jsx';
 import HiddenInputBox from './components/HiddenInputBox.jsx';
 import TestSettingWrapper from './components/TestSettingWrapper.jsx';
 import FinishInterfaceWrapper from './components/FinishInterfaceWrapper.jsx';
+import ThemeSwitcher from './components/ThemeSwitcher.jsx';
 
 import useTimer from './hooks/useTimer.js';
 import useCaretFeature from './hooks/useCaretFeature.js';
@@ -23,12 +24,14 @@ import useAccCalculation from './hooks/useAccCalculation.js';
 import useConsistency from './hooks/useConsistency.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
 import WordLeft from './components/WordLeft.jsx';
-import ThemeSwitcher from './components/ThemeSwitcher.jsx';
+import usePreferences from './hooks/usePreferences.js';
 
 export default function App() {
-  const [activeTheme, setActiveTheme] = useState('mountain');
+  // console.log(localStorage.getItem('preferences'));
+  // console.log(localStorage.clear('preferences'));
+  // return <h1>Hello world</h1>;
 
-  useEffect(() => document.body.setAttribute('data-theme', activeTheme), [activeTheme]);
+  const {preferences, setPreferences} = usePreferences();
 
   const {
     typingMode, setTypingMode,
@@ -212,7 +215,7 @@ export default function App() {
             <Keyboard size={34} className='text-(--main-color)' />
             <h1 className='text-3xl font-medium'>keyboardtype</h1>
           </div>
-          <ThemeSwitcher isFocus={isFocus} activeTheme={activeTheme} setActiveTheme={setActiveTheme}/>
+          <ThemeSwitcher isFocus={isFocus} setPreferences={setPreferences} defaultPreferences={config.DEFAULT_PREFERENCE} />
           <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-xs cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
             <Earth size={16} />
             English
