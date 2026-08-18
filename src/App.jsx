@@ -206,7 +206,8 @@ export default function App() {
             setTestDuration: setTestDuration,
             setTestWordAmount: setTestWordAmount,
             setTimer: setTimer,
-            setWords: setWords
+            setWords: setWords,
+            setPreferences: setPreferences
           }}
         />
       </div>
@@ -256,7 +257,7 @@ export default function App() {
 
               setter={{
                 calculateAcc: calculateAcc,
-                setAcc: setAcc
+                setAcc: setAcc,
               }}
             />
           ) : (

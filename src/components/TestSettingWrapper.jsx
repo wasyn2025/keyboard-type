@@ -22,19 +22,20 @@ export default function TestSettingWrapper({ data, state, setter }) {
         if (state.isFocus || state.isFinished) return;
 
         setter.setTypingMode(data.typingModeList.time);
-        setter.setTestDuration(data.testDurationList[2]);
-        setter.setTestWordAmount(data.wordsAmountList[3]);
-        setter.setTimer(data.testDurationList[2]);
-        setter.setWords(generate(data.wordsAmountList[2]));
+        setter.setTestDuration(state.testDuration);
+        setter.setTimer(state.testDuration);
+        setter.setWords(generate(100));
+        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, typingMode: data.typingModeList.time }));
     }
 
     function setWordMode() {
         if (state.isFocus || state.isFinished) return;
 
         setter.setTypingMode(data.typingModeList.words);
-        setter.setTestWordAmount(data.wordsAmountList[2]);
-        setter.setWords(generate(data.wordsAmountList[2]));
+        setter.setTestWordAmount(state.testWordAmount);
+        setter.setWords(generate(state.testWordAmount));
         setter.setTimer(0);
+        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, typingMode: data.typingModeList.words }));
     }
 
     function handleSetTestDuration(time) {
@@ -42,6 +43,7 @@ export default function TestSettingWrapper({ data, state, setter }) {
 
         setter.setTestDuration(time);
         setter.setTimer(time);
+        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, testDuration: time }));
     }
 
     function handleSetWordAmount(amount) {
@@ -49,6 +51,7 @@ export default function TestSettingWrapper({ data, state, setter }) {
 
         setter.setTestWordAmount(amount);
         setter.setWords(generate(amount));
+        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, wordAmount: amount }));
     }
 
     return (

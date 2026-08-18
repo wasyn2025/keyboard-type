@@ -4,6 +4,7 @@ export const TYPING_MODE = { time: 'time', words: 'words' };
 export const DEFAULT_PREFERENCE = {
     theme: 'gruvbox-dark',
     language: 'english',
-    wordAmount: 30,
-    timeDuration: 30,
+    typingMode: 'time',
+    wordAmount: 25,
+    testDuration: 30,
 }
