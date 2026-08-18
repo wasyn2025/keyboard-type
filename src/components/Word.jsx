@@ -11,21 +11,23 @@ export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPas
         }
     }
 
-    return <div data-wordindex={dataWordIndex}>
-        {kata.split('').map((huruf, hurufIndex) => {
-            className.color = 'neutral';
+    return (
+        <div data-wordindex={dataWordIndex}>
+            {kata.split('').map((huruf, hurufIndex) => {
+                className.color = 'neutral';
 
-            if (hurufIndex < teksUntukDibandingkan.length) {
-                className.color = teksUntukDibandingkan[hurufIndex].toLowerCase() === huruf ?
-                    'correct' :
-                    'incorrect';
-            }
+                if (hurufIndex < teksUntukDibandingkan.length) {
+                    className.color = teksUntukDibandingkan[hurufIndex].toLowerCase() === huruf ?
+                        'correct' :
+                        'incorrect';
+                }
 
-            return <span
-                data-letterindex={hurufIndex}
-                key={hurufIndex}
-                className={`${className.color} ${className.underline} transition-[color] duration-100 ease-linear`}
-            >{huruf}</span>;
-        })}
-    </div>;
+                return <span
+                    data-letterindex={hurufIndex}
+                    key={hurufIndex}
+                    className={`${className.color} ${className.underline} transition-[color] duration-100 ease-linear`}
+                >{huruf}</span>;
+            })}
+        </div>
+    );
 }

@@ -1,17 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 
-export default function useCaretFeature({ teks, kataAktifIndex }) {
-    const [caretPosition, setCaretPosition] = useState(() => { return { top: 0, left: 0 } });
+export default function useCaretFeature({ teks, kataAktifIndex, isFocus }) {
     const containerRef = useRef(null);
-
+    const [caretPosition, setCaretPosition] = useState(() => { return { top: 0, left: 0 } });
     useEffect(() => calculateCaretPosition(), [teks, kataAktifIndex]);
 
     function calculateCaretPosition() {
+        if (isFocus === false) return;
+        
         const container = containerRef.current;
-        if (!container) return;
-
         const wordElement = container.querySelector(`[data-wordindex="${kataAktifIndex}`);
-        if (!wordElement) return;
 
         const hurufAktifIndex = teks.length;
         const containerRect = container.getBoundingClientRect();

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-export default function useNewLineFeature({kataAktifIndex, containerRef}) {
+export default function useNewLineFeature({isFocus, kataAktifIndex, containerRef}) {
     const [offsetGeser, setOffsetGeser] = useState(() => 0);
     const [posisiBarisPertama, setPosisiBarisPertama] = useState(() => 0);
     const [tinggiBaris, setTinggiBaris] = useState(() => null);
@@ -8,11 +8,9 @@ export default function useNewLineFeature({kataAktifIndex, containerRef}) {
     useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
     function handleShowingNewLine() {
-        if (!containerRef.current) return;
+        if(!isFocus) return;
 
         const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
-        if (!elementAktif) return;
-
         const posisiKataAktif = elementAktif.offsetTop;
 
         if (tinggiBaris === null) {

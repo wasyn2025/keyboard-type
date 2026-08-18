@@ -58,6 +58,7 @@ export default function App() {
     caretPosition, setCaretPosition,
     containerRef, restartCaretState
   } = useCaretFeature({
+    isFocus: isFocus,
     teks: teks,
     kataAktifIndex: kataAktifIndex
   });
@@ -68,6 +69,7 @@ export default function App() {
     setTinggiBaris,
     restartNewLineState
   } = useNewLineFeature({
+    isFocus: isFocus,
     kataAktifIndex: kataAktifIndex,
     containerRef: containerRef
   });
