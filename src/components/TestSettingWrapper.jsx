@@ -17,65 +17,65 @@ function TypingModeButton({ children, onClick, className }) {
     );
 }
 
-export default function TestSettingWrapper({ data }) {
+export default function TestSettingWrapper({ data, state, setter }) {
     function setTimeMode() {
-        if (data.isFocus || data.isFinished) return;
+        if (state.isFocus || state.isFinished) return;
 
-        data.setTypingMode(data.typingModeList.time);
-        data.setTestDuration(data.testDurationList[2]);
-        data.setTestWordAmount(data.wordsAmountList[3]);
-        data.setTimer(data.testDurationList[2]);
-        data.setWords(generate(data.wordsAmountList[2]));
+        setter.setTypingMode(data.typingModeList.time);
+        setter.setTestDuration(data.testDurationList[2]);
+        setter.setTestWordAmount(data.wordsAmountList[3]);
+        setter.setTimer(data.testDurationList[2]);
+        setter.setWords(generate(data.wordsAmountList[2]));
     }
 
     function setWordMode() {
-        if (data.isFocus || data.isFinished) return;
+        if (state.isFocus || state.isFinished) return;
 
-        data.setTypingMode(data.typingModeList.words);
-        data.setTestWordAmount(data.wordsAmountList[2]);
-        data.setWords(generate(data.wordsAmountList[2]));
-        data.setTimer(0);
+        setter.setTypingMode(data.typingModeList.words);
+        setter.setTestWordAmount(data.wordsAmountList[2]);
+        setter.setWords(generate(data.wordsAmountList[2]));
+        setter.setTimer(0);
     }
 
     function handleSetTestDuration(time) {
-        if (data.isFocus || data.isFinished) return;
+        if (state.isFocus || state.isFinished) return;
 
-        data.setTestDuration(time);
-        data.setTimer(time);
+        setter.setTestDuration(time);
+        setter.setTimer(time);
     }
 
     function handleSetWordAmount(amount) {
-        if (data.isFocus || data.isFinished) return;
+        if (state.isFocus || state.isFinished) return;
 
-        data.setTestWordAmount(amount);
-        data.setWords(generate(amount));
+        setter.setTestWordAmount(amount);
+        setter.setWords(generate(amount));
     }
 
     return (
-        <div id='tool-menu' className={`${data.isFocus || data.isFinished ? 'invisible' : 'visible'} flex items-center justify-center gap-3 text-(--sub-color) text-xs`}>
+        <div id='tool-menu' className={`${state.isFocus || state.isFinished ? 'invisible' : 'visible'} flex items-center justify-center gap-3 text-(--sub-color) text-xs`}>
             <TestSettingContainer className={`w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
                 <TypingModeButton
                     onClick={setTimeMode}
-                    className={`${data.typingMode === data.typingModeList.time ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 'transition-colors duration-300 w-fit flex items-center gap-2`}>
+                    className={`${state.typingMode === data.typingModeList.time ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 'transition-colors duration-300 w-fit flex items-center gap-2`}>
                     <Clock size={16} />
                     <span>Time</span>
                 </TypingModeButton>
                 <TypingModeButton
                     onClick={setWordMode}
-                    className={`${data.typingMode === data.typingModeList.words ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 'transition-colors duration-300 w-fit flex items-center gap-2`}>
+                    className={`${state.typingMode === data.typingModeList.words ? 'text-(--text-color) pointer-events-none' : 'hover:text-(--text-color) cursor-pointer'} 'transition-colors duration-300 w-fit flex items-center gap-2`}>
                     <CaseSensitive size={16} />
                     <span>Words</span>
                 </TypingModeButton>
             </TestSettingContainer>
             {
-                data.typingMode === data.typingModeList.time ? (
+                state.typingMode === data.typingModeList.time ? (
                     <TestSettingContainer className={`transition-opacity duration-200 w-fit flex items-center gap-4 bg-(--sub-alt-color) py-2.5 px-4 rounded-md`}>
                         {
                             data.testDurationList.map((time, index) => {
                                 return <TypingModeButton
                                     key={index}
                                     onClick={() => handleSetTestDuration(time)}
-                                    className={`${data.testDuration === time ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}
+                                    className={`${state.testDuration === time ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}
                                 >{time}</TypingModeButton>
                             })
                         }
@@ -87,7 +87,7 @@ export default function TestSettingWrapper({ data }) {
                                 return <TypingModeButton
                                     key={index}
                                     onClick={() => handleSetWordAmount(amount)}
-                                    className={`${data.testWordAmount === amount ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}
+                                    className={`${state.testWordAmount === amount ? 'text-(--text-color) pointer-events-none' : 'cursor-pointer hover:text-(--text-color)'} transition-colors duration-300`}
                                 >{amount}</TypingModeButton>
                             })
                         }

@@ -36,8 +36,6 @@ export default function App() {
     currentWord, setCurrentWord, incrementCurrentWord, restartCurrentWord
   } = useTypingSetting();
 
-  console.log(currentWord);
-
   const {
     words, setWords,
     teks, setTeks,
@@ -188,21 +186,29 @@ export default function App() {
             English
           </span>
         </div>
-        <TestSettingWrapper data={{
-          isFocus: isFocus,
-          isFinished: isFinished,
-          typingModeList: Config.TYPING_MODE,
-          testDurationList: Config.TEST_DURATION,
-          wordsAmountList: Config.WORDS_AMOUNT,
-          typingMode: typingMode,
-          testDuration: testDuration,
-          testWordAmount: testWordAmount,
-          setTypingMode: setTypingMode,
-          setTestDuration: setTestDuration,
-          setTestWordAmount: setTestWordAmount,
-          setTimer: setTimer,
-          setWords: setWords,
-        }} />
+        <TestSettingWrapper
+          data={{
+            typingModeList: Config.TYPING_MODE,
+            testDurationList: Config.TEST_DURATION,
+            wordsAmountList: Config.WORDS_AMOUNT,
+          }}
+
+          state={{
+            isFocus: isFocus,
+            isFinished: isFinished,
+            typingMode: typingMode,
+            testDuration: testDuration,
+            testWordAmount: testWordAmount
+          }}
+
+          setter={{
+            setTypingMode: setTypingMode,
+            setTestDuration: setTestDuration,
+            setTestWordAmount: setTestWordAmount,
+            setTimer: setTimer,
+            setWords: setWords
+          }}
+        />
       </div>
 
       <div className='grow'>
@@ -249,8 +255,8 @@ export default function App() {
               }}
 
               setter={{
-                calculateAcc,
-                setAcc
+                calculateAcc: calculateAcc,
+                setAcc: setAcc
               }}
             />
           ) : (
