@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 
 export default function useNewLineFeature({kataAktifIndex, containerRef}) {
-    const [offsetGeser, setOffsetGeser] = useState(0);
-    const [posisiBarisPertama, setPosisiBarisPertama] = useState(0);
-    const [tinggiBaris, setTinggiBaris] = useState(null);
+    const [offsetGeser, setOffsetGeser] = useState(() => 0);
+    const [posisiBarisPertama, setPosisiBarisPertama] = useState(() => 0);
+    const [tinggiBaris, setTinggiBaris] = useState(() => null);
 
     useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 

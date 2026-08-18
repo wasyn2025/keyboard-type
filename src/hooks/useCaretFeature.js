@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 
-export default function useCaretFeature({teks, kataAktifIndex}) {
-    const [caretPosition, setCaretPosition] = useState({ top: 0, left: 0 });
+export default function useCaretFeature({ teks, kataAktifIndex }) {
+    const [caretPosition, setCaretPosition] = useState(() => { return { top: 0, left: 0 } });
     const containerRef = useRef(null);
 
     useEffect(() => calculateCaretPosition(), [teks, kataAktifIndex]);
