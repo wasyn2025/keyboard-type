@@ -1,8 +1,21 @@
 import { Clock, CaseSensitive } from 'lucide-react';
 import { generate, count } from "random-words";
 
-import TestSettingContainer from './TestSettingContainer.jsx';
-import TypingModeButton from './TypingModeButton.jsx';
+function TestSettingContainer({ className, children }) {
+    return (
+        <div className={className}>
+            {children}
+        </div>
+    )
+}
+
+function TypingModeButton({ children, onClick, className }) {
+    return (
+        <button onClick={onClick} className={className}>
+            {children}
+        </button>
+    );
+}
 
 export default function TestSettingWrapper({ data }) {
     function setTimeMode() {

@@ -36,6 +36,8 @@ export default function App() {
     currentWord, setCurrentWord, incrementCurrentWord, restartCurrentWord
   } = useTypingSetting();
 
+  console.log(currentWord);
+
   const {
     words, setWords,
     teks, setTeks,

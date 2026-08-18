@@ -69,8 +69,8 @@ export default function FinishInterfaceWrapper({ data, state, setter }) {
                     <CounterBlock type={'Time'} data={state.time} suffix={state.timeSuffix} />
                 </CounterBlockGrid>
                 <TestMetaDataContainer>
-                    <TestMetaData text={state.testWordAmount} />
-                    <TestMetaData text={state.elapsedTime} />
+                    <TestMetaData text={data.testWordAmount} />
+                    <TestMetaData text={data.elapsedTime} />
                 </TestMetaDataContainer>
             </div>
         </div>
