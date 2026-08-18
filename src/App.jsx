@@ -165,7 +165,7 @@ export default function App() {
   }
 
   return (
-    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-25' onClick={() => inputBoxRef.current.focus()}>
+    <div className='relative w-5/6 mx-auto h-full flex flex-col gap-y-30' onClick={() => inputBoxRef.current.focus()}>
 
       <HiddenInputBox
         ref={inputBoxRef}

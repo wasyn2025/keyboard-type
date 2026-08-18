@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useWpmCalculation from '../hooks/useWpmCalculation.js';
+import { formatTimer } from '../util/util.js';
 
 function CounterBlockGrid({ children }) {
     return (
@@ -54,9 +55,8 @@ export default function FinishInterfaceWrapper({ data, state, setter }) {
     }, [state.isFinished]);
 
     if (state.typingMode === state.typingModeList.words) {
-        state.time = 0;
-        state.timeSuffix = 's';
-        state.elapsedTime = '00:00:00';
+        data.time = state.timer;
+        data.elapsedTime = formatTimer(data.time, false);
     }
 
     return (
@@ -66,7 +66,7 @@ export default function FinishInterfaceWrapper({ data, state, setter }) {
                     <CounterBlock type={'WPM'} data={wpm} />
                     <CounterBlock type={'Accuracy'} data={state.acc} suffix='%' />
                     <CounterBlock type={'Consistency'} data={state.consistency} suffix='%' />
-                    <CounterBlock type={'Time'} data={state.time} suffix={state.timeSuffix} />
+                    <CounterBlock type={'Time'} data={data.time} suffix={data.timeSuffix} />
                 </CounterBlockGrid>
                 <TestMetaDataContainer>
                     <TestMetaData text={data.testWordAmount} />
