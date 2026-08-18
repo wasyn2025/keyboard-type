@@ -34,11 +34,8 @@ function TestMetaDataContainer({ children }) {
 
 export default function FinishInterfaceWrapper({ data, state, setter }) {
     const {
-        wpm,
-        setWpm,
-        calculateCorrectChars,
-        calculateWpm,
-        restartWpmState
+        wpm, setWpm,
+        calculateCorrectChars, calculateWpm,restartWpmState
     } = useWpmCalculation(state.teksHistory, state.words);
 
     useEffect(() => {

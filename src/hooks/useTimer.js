@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-export default function useTimer(initialTime, isFocus, isPaused, handleRestart, typingMode, typingModeWord) {
+export default function useTimer({initialTime, isFocus, isPaused, typingMode, typingModeWord, handleRestart}) {
     const [timer, setTimer] = useState(initialTime);
     const timerIntervalIdRef = useRef(null);
 

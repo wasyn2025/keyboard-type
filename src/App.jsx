@@ -1,15 +1,12 @@
-// packages
 import { useState, useRef, useEffect } from 'react'
 import { Earth, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
 import { generate, count } from "random-words";
 
-// miscellanious
 import * as Util from './util/util.js';
 import * as Config from './util/config.js';
 
 // Heyyy, i'm you from the past :D
 
-// components
 import Word from './components/Word.jsx';
 import Caret from './components/Caret.jsx';
 import SmallButton from './components/SmallButton.jsx';
@@ -19,7 +16,6 @@ import TestSettingWrapper from './components/TestSettingWrapper.jsx';
 import FinishInterfaceWrapper from './components/FinishInterfaceWrapper.jsx';
 import ThemeSwitcher from './components/ThemeSwitcher.jsx';
 
-// custom hooks
 import useTimer from './hooks/useTimer.js';
 import useCaretFeature from './hooks/useCaretFeature.js';
 import useNewLineFeature from './hooks/useNewLineFeature.js';
@@ -53,59 +49,65 @@ export default function App() {
     handleSpace,
     handlePause,
     restartTypingState
-  } = useTypingState(testWordAmount, incrementCurrentWord);
+  } = useTypingState({
+    testWordAmount: testWordAmount,
+    incrementCurrentWord: incrementCurrentWord
+  });
 
   const {
     caretPosition, setCaretPosition,
-    containerRef,restartCaretState
-  } = useCaretFeature(teks, kataAktifIndex);
+    containerRef, restartCaretState
+  } = useCaretFeature({
+    teks: teks,
+    kataAktifIndex: kataAktifIndex
+  });
 
   const {
     offsetGeser, setOffsetGeser,
     setPosisiBarisPertama,
     setTinggiBaris,
     restartNewLineState
-  } = useNewLineFeature(kataAktifIndex, containerRef);
+  } = useNewLineFeature({
+    kataAktifIndex: kataAktifIndex,
+    containerRef: containerRef
+  });
 
   const {
     timer, setTimer,
     timerIntervalIdRef,
-    stopTimer,
-    handleTimerOver,
-    restartTimerState,
-  } = useTimer(
-    testDuration,
-    isFocus,
-    isPaused,
-    () => {
+    stopTimer, handleTimerOver, restartTimerState,
+  } = useTimer({
+    initialTime: testDuration,
+    isFocus: isFocus,
+    isPaused: isPaused,
+    typingMode: typingMode,
+    typingModeWord: Config.TYPING_MODE.words,
+    handleRestart: () => {
       setIsFocus(false);
       setIsFinished(true);
       setIsPaused(false);
       restartCaretState();
     },
-    typingMode,
-    Config.TYPING_MODE.words
-  );
+  });
 
   const {
     acc, setAcc,
     totalKeyStrokes, setTotalKeyStrokes,
     correctKeyStrokes, setCorrectKeyStrokes,
-    calculateAcc,
-    restartAccState
+    calculateAcc, restartAccState
   } = useAccCalculation();
 
   const {
     consistency, restartConsistency
-  } = useConsistency(
-    timer,
-    testDuration,
-    isFocus,
-    isFinished,
-    correctKeyStrokes,
-    typingMode,
-    Config.TYPING_MODE.time
-  );
+  } = useConsistency({
+    timer: timer,
+    initialTime: testDuration,
+    isFocus: isFocus,
+    isFinished: isFinished,
+    correctKeyStrokes: correctKeyStrokes,
+    typingMode: typingMode,
+    typingModeTime: Config.TYPING_MODE.time
+  });
 
   function checkIsLastWord(newText) {
     const isLastWord = kataAktifIndex === (words.length - 1);
@@ -142,7 +144,6 @@ export default function App() {
 
         setTeks(newText);
         setIsFocus(true);
-
         checkIsLastWord(newText);
       }
     }
@@ -158,7 +159,7 @@ export default function App() {
     restartAccState();
     restartConsistency();
     restartCurrentWord();
-    setWords(generate(typingMode === Config.TYPING_MODE.time ? Config.WORDS_AMOUNT[3] :testWordAmount));
+    setWords(generate(typingMode === Config.TYPING_MODE.time ? Config.WORDS_AMOUNT[3] : testWordAmount));
   }
 
   return (

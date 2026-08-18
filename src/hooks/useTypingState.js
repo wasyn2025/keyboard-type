@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { generate, count } from "random-words";
 import * as config from '../util/config.js';
 
-export default function useTypingState(testWordAmount, setCurrentWord) {
+export default function useTypingState({testWordAmount, incrementCurrentWord}) {
     const [words, setWords] = useState(() => generate(testWordAmount));
     const [teks, setTeks] = useState('');
     const [kataAktifIndex, setKataAktifIndex] = useState(0);
@@ -21,7 +21,7 @@ export default function useTypingState(testWordAmount, setCurrentWord) {
             if (teks.length !== 0 && isFinished === false && kataAktifIndex !== (words.length - 1)) {
                 setTeksHistory((previousTextHistory) => [...previousTextHistory, teks.toLowerCase()]);
                 setKataAktifIndex((previousWordIndex) => previousWordIndex + 1);
-                setCurrentWord((prevIndex) => prevIndex + 1);
+                incrementCurrentWord((prevIndex) => prevIndex + 1);
                 setTeks('');
             }
         }
