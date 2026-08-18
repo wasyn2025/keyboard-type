@@ -18,24 +18,34 @@ function TypingModeButton({ children, onClick, className }) {
 }
 
 export default function TestSettingWrapper({ data, state, setter }) {
+    function updateTypingSettings({ testDuration, typingMode, wordAmount, isInfiniteWord }) {
+        setter.setTimer(testDuration);
+        setter.setTypingMode(typingMode);
+        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, typingMode: typingMode }));
+        setter.setWords(generate(wordAmount));
+        setter.setIsInfiniteWord(isInfiniteWord);
+    }
+
     function setTimeMode() {
         if (state.isFocus || state.isFinished) return;
 
-        setter.setTypingMode(data.typingModeList.time);
-        setter.setTestDuration(state.testDuration);
-        setter.setTimer(state.testDuration);
-        setter.setWords(generate(100));
-        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, typingMode: data.typingModeList.time }));
+        updateTypingSettings({
+            testDuration: state.testDuration,
+            typingMode: data.typingModeList.time,
+            wordAmount: data.defaultGeneratedWord,
+            isInfiniteWord: true,
+        });
     }
 
     function setWordMode() {
         if (state.isFocus || state.isFinished) return;
 
-        setter.setTypingMode(data.typingModeList.words);
-        setter.setTestWordAmount(state.testWordAmount);
-        setter.setWords(generate(state.testWordAmount));
-        setter.setTimer(0);
-        setter.setPreferences((prevPreferences) => ({ ...prevPreferences, typingMode: data.typingModeList.words }));
+        updateTypingSettings({
+            testDuration: 0,
+            typingMode: data.typingModeList.words,
+            wordAmount: state.testWordAmount,
+            isInfiniteWord: false,
+        });
     }
 
     function handleSetTestDuration(time) {

@@ -44,6 +44,7 @@ export default function App() {
     isFocus, setIsFocus,
     isFinished, setIsFinished,
     isPaused, setIsPaused,
+    isInfiniteWord, setIsInfiniteWord,
     inputBoxRef,
 
     handleSpace,
@@ -51,8 +52,12 @@ export default function App() {
     restartTypingState
   } = useTypingState({
     testWordAmount: testWordAmount,
+    typingMode: typingMode,
+    typingModeList: Config.TYPING_MODE,
     incrementCurrentWord: incrementCurrentWord
   });
+
+  console.log('Current word length + ' + words.length);
 
   const {
     caretPosition, setCaretPosition,
@@ -70,8 +75,10 @@ export default function App() {
     restartNewLineState
   } = useNewLineFeature({
     isFocus: isFocus,
+    isInfiniteWord: isInfiniteWord,
     kataAktifIndex: kataAktifIndex,
-    containerRef: containerRef
+    containerRef: containerRef,
+    setWords: setWords,
   });
 
   const {
@@ -161,7 +168,6 @@ export default function App() {
     restartAccState();
     restartConsistency();
     restartCurrentWord();
-    setWords(generate(typingMode === Config.TYPING_MODE.time ? Config.WORDS_AMOUNT[3] : testWordAmount));
   }
 
   return (
@@ -191,6 +197,7 @@ export default function App() {
             typingModeList: Config.TYPING_MODE,
             testDurationList: Config.TEST_DURATION,
             wordsAmountList: Config.WORDS_AMOUNT,
+            defaultGeneratedWord: Config.DEFAULT_GENERATED_WORD,
           }}
 
           state={{
@@ -207,6 +214,7 @@ export default function App() {
             setTestWordAmount: setTestWordAmount,
             setTimer: setTimer,
             setWords: setWords,
+            setIsInfiniteWord: setIsInfiniteWord,
             setPreferences: setPreferences
           }}
         />

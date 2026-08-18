@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from 'react'
 import { generate, count } from "random-words";
 import * as config from '../util/config.js';
 
-export default function useTypingState({testWordAmount, incrementCurrentWord}) {
-    const [words, setWords] = useState(() => generate(testWordAmount));
+export default function useTypingState({ testWordAmount, typingMode, typingModeList, incrementCurrentWord }) {
+    const [isInfiniteWord, setIsInfiniteWord] = useState(() => typingMode === typingModeList.time ? true : false);
+    const [words, setWords] = useState(() => determineWordAmount());
+
     const [teks, setTeks] = useState('');
     const [kataAktifIndex, setKataAktifIndex] = useState(0);
     const [teksHistory, setTeksHistory] = useState([]);
@@ -13,6 +15,14 @@ export default function useTypingState({testWordAmount, incrementCurrentWord}) {
     const inputBoxRef = useRef(null);
 
     useEffect(() => inputBoxRef.current.focus(), []);
+
+    function determineWordAmount() {
+        if (typingMode === typingModeList.time && isInfiniteWord === true) {
+            return generate(30);
+        }
+
+        return generate(testWordAmount);
+    }
 
     function handleSpace(event) {
         if (event.key === ' ' && isPaused === false) {
@@ -32,7 +42,7 @@ export default function useTypingState({testWordAmount, incrementCurrentWord}) {
     }
 
     function restartTypingState() {
-        setWords(generate(config.DEFAULT_GENERATED_WORDS));
+        setWords(() => determineWordAmount());
         setTeks('');
         setKataAktifIndex(0);
         setTeksHistory([]);
@@ -49,6 +59,7 @@ export default function useTypingState({testWordAmount, incrementCurrentWord}) {
         isFocus, setIsFocus,
         isFinished, setIsFinished,
         isPaused, setIsPaused,
+        isInfiniteWord, setIsInfiniteWord,
         inputBoxRef,
 
         handlePause,
