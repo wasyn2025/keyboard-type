@@ -185,7 +185,7 @@ export default function App() {
             <h1 className='text-3xl font-medium'>keyboardtype</h1>
           </div>
           <ThemeSwitcher isFocus={isFocus} setPreferences={setPreferences} defaultPreferences={Config.DEFAULT_PREFERENCE} />
-          <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-xs cursor-pointer py-1 px-2 rounded-md hover:bg-white/10`}>
+          <span id='language' className={`${isFocus ? 'invisible' : 'visible'} whitespace-nowrap transition-opacity duration-500 w-fit mx-auto flex items-center gap-2 text-(--text-color) text-xs py-1 px-2 rounded-md`}>
             <Earth size={16} />
             English
           </span>
