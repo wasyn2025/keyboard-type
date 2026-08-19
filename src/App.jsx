@@ -245,7 +245,7 @@ export default function App() {
               data={{
                 time: Util.convertElapsedTime(testDuration - timer),
                 timeSuffix: Util.handleElapsedTimeSuffix(testDuration - timer),
-                testWordAmount: `${testWordAmount} words, english`,
+                testWordAmount: typingMode === Config.TYPING_MODE.words ? `${testWordAmount} words, english` : 'Infinite, english',
                 elapsedTime: Util.formatTimer(testDuration - timer, false),
               }}
 

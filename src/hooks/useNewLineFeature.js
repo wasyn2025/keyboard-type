@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { generate, count } from "random-words";
 
-export default function useNewLineFeature({isFocus, kataAktifIndex, containerRef, setWords}) {
+export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIndex, containerRef, setWords }) {
     const [offsetGeser, setOffsetGeser] = useState(() => 0);
     const [posisiBarisPertama, setPosisiBarisPertama] = useState(() => 0);
     const [tinggiBaris, setTinggiBaris] = useState(() => null);
@@ -9,7 +9,7 @@ export default function useNewLineFeature({isFocus, kataAktifIndex, containerRef
     useEffect(() => handleShowingNewLine(), [kataAktifIndex]);
 
     function handleShowingNewLine() {
-        if(!isFocus) return;
+        if (!isFocus) return;
 
         const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
         const posisiKataAktif = elementAktif.offsetTop;
@@ -27,7 +27,7 @@ export default function useNewLineFeature({isFocus, kataAktifIndex, containerRef
         if (jumlahBarisTerlewati >= 2) {
             setPosisiBarisPertama(prev => prev + tinggiBaris);
             setOffsetGeser(prev => prev + tinggiBaris);
-            setWords((previousWords) => [...previousWords, ...generate(30)]);
+            if (isInfiniteWord === true) setWords((previousWords) => [...previousWords, ...generate(30)]);
         }
     }
 
