@@ -57,6 +57,8 @@ export default function App() {
     incrementCurrentWord: incrementCurrentWord
   });
 
+  console.log('Current word length : ' + words.length);
+
   const {
     caretPosition, setCaretPosition,
     containerRef, restartCaretState

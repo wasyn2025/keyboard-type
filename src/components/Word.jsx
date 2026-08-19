@@ -1,4 +1,6 @@
-export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPassed }) {
+import React from "react";
+
+const Word = React.memo(function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPassed }) {
     let className = { color: 'netral', underline: '' };
     teksUntukDibandingkan = teksUntukDibandingkan.slice(0, kata.length);
 
@@ -30,4 +32,6 @@ export default function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPas
             })}
         </div>
     );
-}
+});
+
+export default Word;

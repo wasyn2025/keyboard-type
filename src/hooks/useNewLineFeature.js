@@ -28,7 +28,7 @@ export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIn
         if (jumlahBarisTerlewati >= 2) {
             setPosisiBarisPertama(prev => prev + tinggiBaris);
             setOffsetGeser(prev => prev + tinggiBaris);
-            if (isInfiniteWord === true) setWords((previousWords) => [...previousWords, ...generate(DEFAULT_GENERATED_WORD)]);
+            if (isInfiniteWord === true) setWords((previousWords) => [...previousWords, ...generate(10)]);
         }
     }
 
