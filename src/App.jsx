@@ -57,8 +57,6 @@ export default function App() {
     incrementCurrentWord: incrementCurrentWord
   });
 
-  console.log('Current word length + ' + words.length);
-
   const {
     caretPosition, setCaretPosition,
     containerRef, restartCaretState
@@ -242,10 +240,10 @@ export default function App() {
           {isFinished ? (
             <FinishInterfaceWrapper
               data={{
-                time: Util.convertElapsedTime(testDuration - timer),
-                timeSuffix: Util.handleElapsedTimeSuffix(testDuration - timer),
+                time: Util.convertElapsedTime(Math.abs(testDuration - timer)),
+                timeSuffix: Util.handleElapsedTimeSuffix(Math.abs(testDuration - timer)),
                 testWordAmount: typingMode === Config.TYPING_MODE.words ? `${testWordAmount} words, english` : 'Infinite, english',
-                elapsedTime: Util.formatTimer(testDuration - timer, false),
+                elapsedTime: Util.formatTimer(Math.abs(testDuration - timer), false),
               }}
 
               state={{

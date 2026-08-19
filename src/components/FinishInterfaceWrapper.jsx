@@ -54,11 +54,6 @@ export default function FinishInterfaceWrapper({ data, state, setter }) {
         }
     }, [state.isFinished]);
 
-    if (state.typingMode === state.typingModeList.words) {
-        data.time = state.timer;
-        data.elapsedTime = formatTimer(data.time, false);
-    }
-
     return (
         <div id='finish-container' className='select-none mb-8 font-general-sans'>
             <div className='mx-auto w-fit'>

@@ -9,9 +9,13 @@ export default function useTypingSetting() {
     });
 
     const [testDuration, setTestDuration] = useState(() => {
-        const saved = JSON.parse(localStorage.getItem('preferences'));
-        const testDuration = saved ? saved.testDuration : null;
-        return testDuration !== null ? testDuration : config.DEFAULT_PREFERENCE.testDuration;
+        if (typingMode === config.TYPING_MODE.time) {
+            const saved = JSON.parse(localStorage.getItem('preferences'));
+            const testDuration = saved ? saved.testDuration : null;
+            return testDuration !== null ? testDuration : config.DEFAULT_PREFERENCE.testDuration;
+        }
+
+        return 0;
     });
 
     const [testWordAmount, setTestWordAmount] = useState(() => {
