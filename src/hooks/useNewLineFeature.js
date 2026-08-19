@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { generate, count } from "random-words";
+import { generate } from "random-words";
+import { DEFAULT_GENERATED_WORD } from "../util/config.js";
 
 export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIndex, containerRef, setWords }) {
     const [offsetGeser, setOffsetGeser] = useState(() => 0);
@@ -27,7 +28,7 @@ export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIn
         if (jumlahBarisTerlewati >= 2) {
             setPosisiBarisPertama(prev => prev + tinggiBaris);
             setOffsetGeser(prev => prev + tinggiBaris);
-            if (isInfiniteWord === true) setWords((previousWords) => [...previousWords, ...generate(30)]);
+            if (isInfiniteWord === true) setWords((previousWords) => [...previousWords, ...generate(DEFAULT_GENERATED_WORD)]);
         }
     }
 

@@ -1,5 +1,6 @@
 import { Clock, CaseSensitive } from 'lucide-react';
-import { generate, count } from "random-words";
+import { generate } from "random-words";
+import { DEFAULT_GENERATED_WORD } from '../util/config.js';
 
 function TestSettingContainer({ className, children }) {
     return (
@@ -32,7 +33,7 @@ export default function TestSettingWrapper({ data, state, setter }) {
         updateTypingSettings({
             testDuration: state.testDuration,
             typingMode: data.typingModeList.time,
-            wordAmount: data.defaultGeneratedWord,
+            wordAmount: DEFAULT_GENERATED_WORD,
             isInfiniteWord: true,
         });
     }

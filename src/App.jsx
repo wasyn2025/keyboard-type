@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Earth, RotateCcw, Keyboard, SettingsIcon, Play, Pause } from 'lucide-react';
-import { generate, count } from "random-words";
+import { generate } from "random-words";
 
 import * as Util from './util/util.js';
 import * as Config from './util/config.js';
@@ -197,7 +197,6 @@ export default function App() {
             typingModeList: Config.TYPING_MODE,
             testDurationList: Config.TEST_DURATION,
             wordsAmountList: Config.WORDS_AMOUNT,
-            defaultGeneratedWord: Config.DEFAULT_GENERATED_WORD,
           }}
 
           state={{

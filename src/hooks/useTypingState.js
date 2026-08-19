@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { generate, count } from "random-words";
-import * as config from '../util/config.js';
+import { generate } from "random-words";
+import { DEFAULT_GENERATED_WORD } from '../util/config.js';
 
 export default function useTypingState({ testWordAmount, typingMode, typingModeList, incrementCurrentWord }) {
     const [isInfiniteWord, setIsInfiniteWord] = useState(() => typingMode === typingModeList.time ? true : false);
@@ -18,7 +18,7 @@ export default function useTypingState({ testWordAmount, typingMode, typingModeL
 
     function determineWordAmount() {
         if (typingMode === typingModeList.time && isInfiniteWord === true) {
-            return generate(30);
+            return generate(DEFAULT_GENERATED_WORD);
         }
 
         return generate(testWordAmount);
