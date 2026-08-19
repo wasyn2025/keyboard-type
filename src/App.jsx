@@ -202,7 +202,8 @@ export default function App() {
             isFinished: isFinished,
             typingMode: typingMode,
             testDuration: testDuration,
-            testWordAmount: testWordAmount
+            testWordAmount: testWordAmount,
+            preferences: preferences,
           }}
 
           setter={{

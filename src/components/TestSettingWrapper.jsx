@@ -21,6 +21,7 @@ function TypingModeButton({ children, onClick, className }) {
 export default function TestSettingWrapper({ data, state, setter }) {
     function updateTypingSettings({ testDuration, typingMode, wordAmount, isInfiniteWord }) {
         setter.setTimer(testDuration);
+        setter.setTestDuration(testDuration);
         setter.setTypingMode(typingMode);
         setter.setPreferences((prevPreferences) => ({ ...prevPreferences, typingMode: typingMode }));
         setter.setWords(generate(wordAmount));
@@ -31,7 +32,7 @@ export default function TestSettingWrapper({ data, state, setter }) {
         if (state.isFocus || state.isFinished) return;
 
         updateTypingSettings({
-            testDuration: state.testDuration,
+            testDuration: state.preferences.testDuration,
             typingMode: data.typingModeList.time,
             wordAmount: DEFAULT_GENERATED_WORD,
             isInfiniteWord: true,
@@ -44,7 +45,7 @@ export default function TestSettingWrapper({ data, state, setter }) {
         updateTypingSettings({
             testDuration: 0,
             typingMode: data.typingModeList.words,
-            wordAmount: state.testWordAmount,
+            wordAmount: state.preferences.wordAmount,
             isInfiniteWord: false,
         });
     }
