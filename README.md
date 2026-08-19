@@ -1,5 +1,5 @@
 # ⌨️ KeyboardType 
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![KeyboardType Home](./screenshots/keyboardtype-main.png)
 
 A [monkeytype](https://monkeytype.com) clone website client for testing your typing speed, consistency, and accuracy with minimalist and easy to use interface.
