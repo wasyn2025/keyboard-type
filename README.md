@@ -17,12 +17,15 @@ A [monkeytype](https://monkeytype.com) clone website client for testing your typ
 - Highlight in red when a letter is typed incorrectly
 - Correctly typed letter will have white highlight otherwise, it will have dimmed highlight.
 - Restart or pause in the middle of a test
+- Test mode selection (timer and word mode)
+- Time duration and word amount selection
+- Saved user preferences
 
 ## 💻 Tech Stack
 
-**Client:** React, TailwindCSS
+**Client:** React (19.2.8), TailwindCSS (4.3)
 
-**Package:** NPM
+**Package:** NPM (11.6.2)
 
 ## 📦 Installation
 
