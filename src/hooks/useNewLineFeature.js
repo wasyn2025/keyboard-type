@@ -38,5 +38,5 @@ export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIn
         setTinggiBaris(null);
     }
 
-    return { offsetGeser, setOffsetGeser, setPosisiBarisPertama, setTinggiBaris, restartNewLineState };
+    return { offsetGeser, restartNewLineState };
 }

@@ -33,7 +33,7 @@ export default function App() {
     typingMode, setTypingMode,
     testDuration, setTestDuration,
     testWordAmount, setTestWordAmount,
-    currentWord, setCurrentWord, incrementCurrentWord, restartCurrentWord
+    currentWord, incrementCurrentWord, restartCurrentWord
   } = useTypingSetting();
 
   const {
@@ -57,10 +57,8 @@ export default function App() {
     incrementCurrentWord: incrementCurrentWord
   });
 
-  console.log('Current word length : ' + words.length);
-
   const {
-    caretPosition, setCaretPosition,
+    caretPosition,
     containerRef, restartCaretState
   } = useCaretFeature({
     isFocus: isFocus,
@@ -69,9 +67,7 @@ export default function App() {
   });
 
   const {
-    offsetGeser, setOffsetGeser,
-    setPosisiBarisPertama,
-    setTinggiBaris,
+    offsetGeser,
     restartNewLineState
   } = useNewLineFeature({
     isFocus: isFocus,
@@ -83,8 +79,7 @@ export default function App() {
 
   const {
     timer, setTimer,
-    timerIntervalIdRef,
-    stopTimer, handleTimerOver, restartTimerState,
+    stopTimer, restartTimerState,
   } = useTimer({
     initialTime: testDuration,
     isFocus: isFocus,

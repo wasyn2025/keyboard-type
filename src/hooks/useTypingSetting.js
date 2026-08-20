@@ -43,6 +43,6 @@ export default function useTypingSetting() {
         typingMode, setTypingMode,
         testDuration, setTestDuration,
         testWordAmount, setTestWordAmount,
-        currentWord, setCurrentWord, incrementCurrentWord, restartCurrentWord
+        currentWord, incrementCurrentWord, restartCurrentWord
     };
 }

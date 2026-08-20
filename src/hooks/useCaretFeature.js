@@ -7,7 +7,7 @@ export default function useCaretFeature({ teks, kataAktifIndex, isFocus }) {
 
     function calculateCaretPosition() {
         if (isFocus === false) return;
-        
+
         const container = containerRef.current;
         const wordElement = container.querySelector(`[data-wordindex="${kataAktifIndex}`);
 
@@ -39,5 +39,5 @@ export default function useCaretFeature({ teks, kataAktifIndex, isFocus }) {
         setCaretPosition({ top: 0, left: 0 });
     }
 
-    return { caretPosition, setCaretPosition, containerRef, restartCaretState };
+    return { caretPosition, containerRef, restartCaretState };
 }
