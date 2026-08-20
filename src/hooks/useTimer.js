@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-export default function useTimer({initialTime, isFocus, isPaused, typingMode, typingModeWord, handleRestart}) {
+export default function useTimer({ initialTime, isFocus, isPaused, typingMode, typingModeWord, handleRestart }) {
     const [timer, setTimer] = useState(() => initialTime);
     const timerIntervalIdRef = useRef(null);
 
@@ -11,7 +11,7 @@ export default function useTimer({initialTime, isFocus, isPaused, typingMode, ty
         if (!isFocus || isPaused === true) return;
 
         timerIntervalIdRef.current = setInterval(() => {
-            if(typingMode === typingModeWord) {
+            if (typingMode === typingModeWord) {
                 setTimer((timer) => timer + 1);
                 return;
             }
@@ -36,5 +36,5 @@ export default function useTimer({initialTime, isFocus, isPaused, typingMode, ty
         setTimer(typingMode !== typingModeWord ? initialTime : 0);
     }
 
-    return { timer, setTimer, timerIntervalIdRef, stopTimer, handleTimerOver, restartTimerState };
+    return { timer, setTimer, stopTimer, restartTimerState };
 }

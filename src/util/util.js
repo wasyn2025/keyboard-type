@@ -36,7 +36,7 @@ export function formatTimer(totalSeconds, isCleanFormat = true) {
 }
 
 export function limitTyping(typedWords, kataAktifIndex, containerRef) {
-    const currentWord = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
+    const currentWord = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"]`);
     const currentWordLength = currentWord.querySelectorAll('span').length;
 
     return typedWords.length > currentWordLength ? true : false;
@@ -57,11 +57,11 @@ export function convertElapsedTime(elapsedTime) {
 export function handleElapsedTimeSuffix(elapsedTime) {
     let suffix = '';
 
-    if(elapsedTime >= 3600) {
+    if (elapsedTime >= 3600) {
         return 'h';
     }
 
-    if(elapsedTime >= 60) {
+    if (elapsedTime >= 60) {
         return 'm';
     }
 

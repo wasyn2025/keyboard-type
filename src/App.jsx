@@ -19,6 +19,7 @@ import ThemeSwitcher from './components/ThemeSwitcher.jsx';
 import useTimer from './hooks/useTimer.js';
 import useCaretFeature from './hooks/useCaretFeature.js';
 import useNewLineFeature from './hooks/useNewLineFeature.js';
+import useVirtualWords from './hooks/useVirtualWords.js';
 import useTypingState from './hooks/useTypingState.js';
 import useTypingSetting from './hooks/useTypingSetting.js';
 import WordLeft from './components/WordLeft.jsx';
@@ -68,6 +69,7 @@ export default function App() {
 
   const {
     offsetGeser,
+    tinggiBaris,
     restartNewLineState
   } = useNewLineFeature({
     isFocus: isFocus,
@@ -75,6 +77,18 @@ export default function App() {
     kataAktifIndex: kataAktifIndex,
     containerRef: containerRef,
     setWords: setWords,
+  });
+
+  const {
+    visibleWords,
+    topSpacerHeight,
+    restartVirtualWords
+  } = useVirtualWords({
+    words: words,
+    kataAktifIndex: kataAktifIndex,
+    offsetGeser: offsetGeser,
+    tinggiBaris: tinggiBaris,
+    containerRef: containerRef,
   });
 
   const {
@@ -160,6 +174,7 @@ export default function App() {
     restartTimerState();
     restartCaretState();
     restartNewLineState();
+    restartVirtualWords();
     restartAccState();
     restartConsistency();
     restartCurrentWord();
@@ -271,8 +286,14 @@ export default function App() {
                 style={{ transform: `translateY(-${offsetGeser}px)` }}
               >
                 <Caret isFocus={isFocus} caretPosition={caretPosition} />
+                {topSpacerHeight > 0 && (
+                  <div
+                    style={{ width: '100%', height: `${topSpacerHeight}px`, flexShrink: 0 }}
+                    aria-hidden='true'
+                  />
+                )}
                 {
-                  words.map((kata, kataIndex) => (
+                  visibleWords.map(({ kata, kataIndex }) => (
                     <Word
                       key={kataIndex}
                       kata={kata}

@@ -9,7 +9,7 @@ export default function useCaretFeature({ teks, kataAktifIndex, isFocus }) {
         if (isFocus === false) return;
 
         const container = containerRef.current;
-        const wordElement = container.querySelector(`[data-wordindex="${kataAktifIndex}`);
+        const wordElement = container.querySelector(`[data-wordindex="${kataAktifIndex}"]`);
 
         const hurufAktifIndex = teks.length;
         const containerRect = container.getBoundingClientRect();

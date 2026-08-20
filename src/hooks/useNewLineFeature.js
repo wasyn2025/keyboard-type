@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { generate } from "random-words";
-import { DEFAULT_GENERATED_WORD } from "../util/config.js";
 
 export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIndex, containerRef, setWords }) {
     const [offsetGeser, setOffsetGeser] = useState(() => 0);
@@ -12,7 +11,7 @@ export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIn
     function handleShowingNewLine() {
         if (!isFocus) return;
 
-        const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"`);
+        const elementAktif = containerRef.current.querySelector(`[data-wordindex="${kataAktifIndex}"]`);
         const posisiKataAktif = elementAktif.offsetTop;
 
         if (tinggiBaris === null) {
@@ -38,5 +37,5 @@ export default function useNewLineFeature({ isFocus, isInfiniteWord, kataAktifIn
         setTinggiBaris(null);
     }
 
-    return { offsetGeser, restartNewLineState };
+    return { offsetGeser, tinggiBaris, restartNewLineState };
 }
