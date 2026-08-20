@@ -1,4 +1,5 @@
-# ⌨️ KeyboardType 
+# KeyboardType
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![KeyboardType Home](./screenshots/keyboardtype-home.png)
 
@@ -10,7 +11,7 @@ KeyboardType is a clone website of [monkeytype](https://monkeytype.com) for test
 > - Content overflowing off-screen
 > - The page appearing overly long
 
-## 🛠️ Features
+## Features
 
 - 60-second timer for testing typing speed
 - A basic statistic showing WPM, Accuracy, Consistency, and Elapsed time
@@ -22,13 +23,13 @@ KeyboardType is a clone website of [monkeytype](https://monkeytype.com) for test
 - Theme selection
 - Saved user preferences
 
-## 💻 Tech Stack
+## Tech Stack
 
 **Client:** React (19.2.8), TailwindCSS (4.3)
 
 **Package:** NPM (11.6.2)
 
-## 📦 Installation
+## Installation
 
 Install KeyboardType project with git and run locally with npm
 
@@ -39,7 +40,7 @@ Install KeyboardType project with git and run locally with npm
   npm run dev
 ```
 
-## 📄 License
+## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
