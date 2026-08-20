@@ -19,6 +19,7 @@ KeyboardType is a clone website of [monkeytype](https://monkeytype.com) for test
 - Restart or pause in the middle of a test
 - Test mode selection (timer and word mode)
 - Time duration and word amount selection
+- Theme selection
 - Saved user preferences
 
 ## 💻 Tech Stack
