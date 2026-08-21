@@ -288,6 +288,7 @@ export default function App() {
                 <Caret isFocus={isFocus} caretPosition={caretPosition} />
                 {topSpacerHeight > 0 && (
                   <div
+                    className='-mb-3'
                     style={{ width: '100%', height: `${topSpacerHeight}px`, flexShrink: 0 }}
                     aria-hidden='true'
                   />
