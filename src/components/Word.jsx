@@ -1,6 +1,6 @@
-import React from "react";
+import { memo } from "react";
 
-const Word = React.memo(function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPassed }) {
+const Word = memo(function Word({ kata, dataWordIndex, teksUntukDibandingkan, isPassed }) {
     let className = { color: 'netral', underline: '' };
     teksUntukDibandingkan = teksUntukDibandingkan.slice(0, kata.length);
 

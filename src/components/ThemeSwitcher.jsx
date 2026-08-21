@@ -1,38 +1,18 @@
-import { useState, useRef, useEffect } from 'react';
-import { Palette, Check } from 'lucide-react';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
+import { Palette } from 'lucide-react';
+import { THEME_MAP } from '../util/themes';
 
-const themes = [
-    { id: 'mountain', name: 'Mountain' },
-    { id: 'gruvbox-dark', name: 'Gruvbox Dark' },
-    { id: 'serika-dark', name: 'Serika Dark' },
-    { id: 'dracula', name: 'Dracula' },
-    { id: 'laser', name: 'Laser' },
-    { id: '8008', name: 'Crimson Dark' },
-    { id: 'terminal', name: 'Terminal' },
-    { id: 'bento', name: 'Bento' },
-    { id: 'miami', name: 'Miami' },
-    { id: 'camping', name: 'Camping' },
-    { id: 'nord', name: 'Nord' },
-    { id: 'ayu-dark', name: 'Ayu Dark' },
-    { id: 'tokyo-night', name: 'Tokyo Night' },
-    { id: 'solarized-dark', name: 'Solarized Dark' },
-    { id: 'catppuccin-mocha', name: 'Catppuccin Mocha' },
-    { id: 'rose-pine', name: 'Rose Pine' },
-    { id: 'monokai', name: 'Monokai' },
-    { id: 'cyberpunk', name: 'Cyberpunk' },
-    { id: 'botanical', name: 'Botanical' },
-    { id: 'iceberg', name: 'Iceberg' },
-];
+const ThemeModal = lazy(() => import('./ThemeModal'));
 
-export default function ThemeSwitcher({ isFocus, setPreferences, defaultPreferences }) {
+function ThemeSwitcher({ isFocus, setPreferences, defaultPreferences }) {
     const [activeTheme, setActiveTheme] = useState(() => {
         const saved = localStorage.getItem('preferences');
         const theme = saved ? JSON.parse(saved).theme : null;
         return theme !== null ? theme : defaultPreferences.theme;
     });
     const [isOpen, setIsOpen] = useState(false);
-    const activeThemeName = themes.find((theme) => theme.id === activeTheme)?.name;
 
+    const activeThemeName = THEME_MAP[activeTheme] || activeTheme;
     useEffect(() => document.body.setAttribute('data-theme', activeTheme), [activeTheme]);
 
     function handleSelectTheme(themeId) {
@@ -51,28 +31,16 @@ export default function ThemeSwitcher({ isFocus, setPreferences, defaultPreferen
             </span>
 
             {isOpen && (
-                <div onClick={() => setIsOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div onClick={(e) => e.stopPropagation()} className="bg-(--sub-alt-color) rounded-lg p-4 w-116 h-125 flex flex-col overflow-scroll text-(--text-color)">
-                        {themes.map((theme) => (
-                            <div
-                                key={theme.id}
-                                onClick={() => handleSelectTheme(theme.id)}
-                                className={`${activeTheme === theme.id ? 'pointer-events-none' : 'cursor-pointer hover:bg-white/10'} font-general-sans rounded-md flex items-center justify-between gap-3 px-3 py-2`}
-                            >
-                                {activeTheme === theme.id ? (<Check size={16} />) : ''}
-                                <div data-theme={theme.id} className='flex items-center justify-between gap-3 grow'>
-                                    <span className="text-sm">{theme.name}</span>
-                                    <div className="flex gap-1">
-                                        <div className="size-4 rounded-sm bg-(--bg-color) border border-white/20" />
-                                        <div className="size-4 rounded-sm bg-(--main-color)" />
-                                        <div className="size-4 rounded-sm bg-(--error-color)" />
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <Suspense fallback={null}>
+                    <ThemeModal
+                        activeTheme={activeTheme}
+                        onSelectTheme={handleSelectTheme}
+                        onClose={() => setIsOpen(false)}
+                    />
+                </Suspense>
             )}
         </>
     );
 }
+
+export default memo(ThemeSwitcher);
